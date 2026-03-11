@@ -4,10 +4,6 @@
 @section('page-title', 'Cockpit de Pagamentos')
 @section('page-subtitle', 'Visao geral de todas as parcelas e pagamentos')
 
-@section('breadcrumb')
-<span class="current">Cockpit de Pagamentos</span>
-@endsection
-
 @section('content')
 
 {{-- Summary Cards --}}

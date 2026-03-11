@@ -8,10 +8,6 @@
 <span class="status-badge status-{{ $tour->status }} ms-2">{{ ucfirst($tour->status) }}</span>
 @endsection
 
-@section('breadcrumb')
-<a href="{{ route('tours.index') }}">Tours</a> <span class="separator">/</span> <span class="current">{{ $tour->name }}</span>
-@endsection
-
 @section('content')
 <div class="page-header">
     <div></div>

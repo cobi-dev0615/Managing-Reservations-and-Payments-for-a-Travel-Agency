@@ -3,10 +3,6 @@
 @section('title', 'Novo Usuario')
 @section('page-title', 'Novo Usuario')
 
-@section('breadcrumb')
-<a href="{{ route('users.index') }}">Usuarios</a> <span class="separator">/</span> <span class="current">Novo Usuario</span>
-@endsection
-
 @section('content')
 <div class="row justify-content-center">
     <div class="col-lg-6">

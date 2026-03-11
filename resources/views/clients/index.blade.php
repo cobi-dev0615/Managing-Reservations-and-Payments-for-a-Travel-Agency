@@ -4,10 +4,6 @@
 @section('page-title', 'Clientes')
 @section('page-subtitle', 'Gerencie sua base de clientes')
 
-@section('breadcrumb')
-<span class="current">Clientes</span>
-@endsection
-
 @section('content')
 <div class="page-header">
     <div></div>

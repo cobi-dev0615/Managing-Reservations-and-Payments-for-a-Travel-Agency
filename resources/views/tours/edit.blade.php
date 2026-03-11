@@ -3,10 +3,6 @@
 @section('title', 'Editar Tour')
 @section('page-title', 'Editar Tour')
 
-@section('breadcrumb')
-<a href="{{ route('tours.index') }}">Tours</a> <span class="separator">/</span> <a href="{{ route('tours.show', $tour) }}">{{ $tour->name }}</a> <span class="separator">/</span> <span class="current">Editar</span>
-@endsection
-
 @section('content')
 <div class="row justify-content-center">
     <div class="col-md-8">

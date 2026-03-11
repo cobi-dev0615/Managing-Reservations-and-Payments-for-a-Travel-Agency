@@ -3,10 +3,6 @@
 @section('title', 'Nova Reserva')
 @section('page-title', 'Nova Reserva')
 
-@section('breadcrumb')
-<a href="{{ route('bookings.index') }}">Reservas</a> <span class="separator">/</span> <span class="current">Nova Reserva</span>
-@endsection
-
 @section('content')
 <div class="row justify-content-center">
     <div class="col-md-10">

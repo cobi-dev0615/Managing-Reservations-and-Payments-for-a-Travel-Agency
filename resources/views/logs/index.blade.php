@@ -4,10 +4,6 @@
 @section('page-title', 'Logs')
 @section('page-subtitle', 'Historico de e-mails e atividades do sistema')
 
-@section('breadcrumb')
-<span class="current">Logs</span>
-@endsection
-
 @section('content')
 
 {{-- Tabs --}}

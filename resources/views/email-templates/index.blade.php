@@ -4,10 +4,6 @@
 @section('page-title', 'Templates de E-mail')
 @section('page-subtitle', 'Configure os modelos de e-mail enviados aos clientes')
 
-@section('breadcrumb')
-<span class="current">Templates de E-mail</span>
-@endsection
-
 @section('content')
 <div class="page-header">
     <div></div>

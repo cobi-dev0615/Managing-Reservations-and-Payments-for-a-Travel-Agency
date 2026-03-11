@@ -3,10 +3,6 @@
 @section('title', 'Novo Template de E-mail')
 @section('page-title', 'Novo Template de E-mail')
 
-@section('breadcrumb')
-<a href="{{ route('email-templates.index') }}">Templates de E-mail</a> <span class="separator">/</span> <span class="current">Novo Template</span>
-@endsection
-
 @section('content')
 <div class="row">
     <div class="col-lg-8">

@@ -4,10 +4,6 @@
 @section('page-title', 'Configuracoes')
 @section('page-subtitle', 'Ajuste as configuracoes do sistema')
 
-@section('breadcrumb')
-<span class="current">Configuracoes</span>
-@endsection
-
 @section('content')
 
 <form method="POST" action="{{ route('settings.update') }}">

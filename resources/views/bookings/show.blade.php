@@ -8,10 +8,6 @@
 <span class="status-badge status-{{ $booking->status }} ms-2">{{ ucfirst($booking->status) }}</span>
 @endsection
 
-@section('breadcrumb')
-<a href="{{ route('bookings.index') }}">Reservas</a> <span class="separator">/</span> <span class="current">#{{ $booking->id }}</span>
-@endsection
-
 @section('content')
 <div class="page-header">
     <div></div>

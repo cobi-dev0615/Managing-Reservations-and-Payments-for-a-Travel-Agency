@@ -3,10 +3,6 @@
 @section('title', 'Novo Tour')
 @section('page-title', 'Novo Tour')
 
-@section('breadcrumb')
-<a href="{{ route('tours.index') }}">Tours</a> <span class="separator">/</span> <span class="current">Novo Tour</span>
-@endsection
-
 @section('content')
 <div class="row justify-content-center">
     <div class="col-lg-8">

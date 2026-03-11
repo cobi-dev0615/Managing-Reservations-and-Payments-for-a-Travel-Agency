@@ -4,10 +4,6 @@
 @section('page-title', $client->name)
 @section('page-subtitle', $client->email)
 
-@section('breadcrumb')
-<a href="{{ route('clients.index') }}">Clientes</a> <span class="separator">/</span> <span class="current">{{ $client->name }}</span>
-@endsection
-
 @section('content')
 <div class="page-header">
     <div></div>

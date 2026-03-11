@@ -4,10 +4,6 @@
 @section('page-title', 'Gerenciar Usuarios')
 @section('page-subtitle', 'Controle de acesso e permissoes do sistema')
 
-@section('breadcrumb')
-<span class="current">Usuarios</span>
-@endsection
-
 @section('content')
 <div class="page-header">
     <div></div>

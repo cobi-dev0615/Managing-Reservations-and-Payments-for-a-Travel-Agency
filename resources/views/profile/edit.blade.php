@@ -3,10 +3,6 @@
 @section('title', 'Meu Perfil')
 @section('page-title', 'Meu Perfil')
 
-@section('breadcrumb')
-<span class="current">Meu Perfil</span>
-@endsection
-
 @section('content')
 <div class="row g-4 justify-content-center">
     <div class="col-lg-8">

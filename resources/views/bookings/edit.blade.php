@@ -3,10 +3,6 @@
 @section('title', 'Editar Reserva #' . $booking->id)
 @section('page-title', 'Editar Reserva')
 
-@section('breadcrumb')
-<a href="{{ route('bookings.index') }}">Reservas</a> <span class="separator">/</span> <a href="{{ route('bookings.show', $booking) }}">#{{ $booking->id }}</a> <span class="separator">/</span> <span class="current">Editar</span>
-@endsection
-
 @section('content')
 <div class="row justify-content-center">
     <div class="col-md-10">

@@ -4,10 +4,6 @@
 @section('page-title', 'Tours')
 @section('page-subtitle', 'Gerencie todos os tours e pacotes de viagem')
 
-@section('breadcrumb')
-<span class="current">Tours</span>
-@endsection
-
 @section('content')
 <div class="page-header">
     <div></div>
