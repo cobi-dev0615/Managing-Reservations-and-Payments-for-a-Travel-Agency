@@ -2,18 +2,13 @@
 
 @section('title', 'Logs')
 @section('page-title', 'Logs')
+@section('page-subtitle', 'Historico de e-mails e atividades do sistema')
 
 @section('breadcrumb')
 <span class="current">Logs</span>
 @endsection
 
 @section('content')
-<div class="page-header">
-    <div>
-        <h4><i class="bi bi-clock-history text-primary me-2" style="font-size: 1.1rem;"></i>Logs</h4>
-        <p class="page-header-subtitle mb-0">Historico de e-mails e atividades do sistema</p>
-    </div>
-</div>
 
 {{-- Tabs --}}
 <ul class="nav nav-tabs mb-4" role="tablist">

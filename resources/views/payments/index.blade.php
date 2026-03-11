@@ -2,18 +2,13 @@
 
 @section('title', 'Cockpit de Pagamentos')
 @section('page-title', 'Cockpit de Pagamentos')
+@section('page-subtitle', 'Visao geral de todas as parcelas e pagamentos')
 
 @section('breadcrumb')
 <span class="current">Cockpit de Pagamentos</span>
 @endsection
 
 @section('content')
-<div class="page-header">
-    <div>
-        <h4><i class="bi bi-credit-card-2-front-fill text-primary me-2" style="font-size: 1.1rem;"></i>Cockpit de Pagamentos</h4>
-        <p class="page-header-subtitle mb-0">Visao geral de todas as parcelas e pagamentos</p>
-    </div>
-</div>
 
 {{-- Summary Cards --}}
 <div class="row g-3 mb-4">

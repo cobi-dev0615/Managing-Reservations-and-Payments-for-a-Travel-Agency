@@ -2,6 +2,7 @@
 
 @section('title', 'Reservas')
 @section('page-title', 'Reservas')
+@section('page-subtitle', 'Gerencie todas as reservas de viagem')
 
 @section('breadcrumb')
 <span class="current">Reservas</span>
@@ -9,10 +10,7 @@
 
 @section('content')
 <div class="page-header">
-    <div>
-        <h4><i class="bi bi-journal-bookmark-fill text-primary me-2" style="font-size: 1.1rem;"></i>Reservas</h4>
-        <p class="page-header-subtitle mb-0">Gerencie todas as reservas de viagem</p>
-    </div>
+    <div></div>
     <a href="{{ route('bookings.create') }}" class="btn btn-primary">
         <i class="bi bi-plus-lg"></i> Nova Reserva
     </a>

@@ -3,19 +3,18 @@
 @section('title', 'Reserva #' . $booking->id)
 @section('page-title', 'Reserva #' . $booking->id)
 
+@section('page-subtitle')
+{{ $booking->client->name ?? 'N/A' }} &middot; {{ $booking->tour_name }}
+<span class="status-badge status-{{ $booking->status }} ms-2">{{ ucfirst($booking->status) }}</span>
+@endsection
+
 @section('breadcrumb')
 <a href="{{ route('bookings.index') }}">Reservas</a> <span class="separator">/</span> <span class="current">#{{ $booking->id }}</span>
 @endsection
 
 @section('content')
 <div class="page-header">
-    <div>
-        <h4>Reserva #{{ $booking->id }}</h4>
-        <p class="page-header-subtitle mb-0">
-            {{ $booking->client->name ?? 'N/A' }} &middot; {{ $booking->tour_name }}
-            <span class="status-badge status-{{ $booking->status }} ms-2">{{ ucfirst($booking->status) }}</span>
-        </p>
-    </div>
+    <div></div>
     <div class="d-flex gap-2">
         <a href="{{ route('bookings.edit', $booking) }}" class="btn btn-outline-secondary">
             <i class="bi bi-pencil"></i> Editar

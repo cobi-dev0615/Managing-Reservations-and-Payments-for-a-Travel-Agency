@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
 @section('title', 'Usuarios')
-@section('page-title', 'Usuarios')
+@section('page-title', 'Gerenciar Usuarios')
+@section('page-subtitle', 'Controle de acesso e permissoes do sistema')
 
 @section('breadcrumb')
 <span class="current">Usuarios</span>
@@ -9,10 +10,7 @@
 
 @section('content')
 <div class="page-header">
-    <div>
-        <h4><i class="bi bi-shield-lock-fill text-primary me-2" style="font-size: 1.1rem;"></i>Gerenciar Usuarios</h4>
-        <p class="page-header-subtitle mb-0">Controle de acesso e permissoes do sistema</p>
-    </div>
+    <div></div>
     <a href="{{ route('users.create') }}" class="btn btn-primary">
         <i class="bi bi-plus-lg"></i> Novo Usuario
     </a>

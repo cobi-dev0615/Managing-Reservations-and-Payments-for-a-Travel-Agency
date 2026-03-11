@@ -1,17 +1,10 @@
 @extends('layouts.app')
 
 @section('title', 'Dashboard')
-@section('page-title', 'Dashboard')
+@section('page-title', 'Dashboard Operacional')
+@section('page-subtitle', 'Visao geral do sistema de reservas e pagamentos')
 
 @section('content')
-{{-- Welcome Header --}}
-<div class="page-header mb-4">
-    <div>
-        <h4>Dashboard Operacional</h4>
-        <p class="page-header-subtitle mb-0">Visao geral do sistema de reservas e pagamentos</p>
-    </div>
-</div>
-
 {{-- Payment Status Cards --}}
 <div class="row g-3 mb-4">
     <div class="col-xl col-md-4 col-6">

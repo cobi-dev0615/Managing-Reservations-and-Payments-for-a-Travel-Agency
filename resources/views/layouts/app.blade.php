@@ -761,12 +761,8 @@
 
     {{-- Sidebar --}}
     <nav class="sidebar" id="sidebar" aria-label="Navegacao principal">
-        <div class="sidebar-brand">
-            <img src="{{ asset('images/mojo.png') }}" alt="Mojo Logo" style="width: 36px; height: 36px; border-radius: 8px; object-fit: contain; flex-shrink: 0;">
-            <div class="sidebar-brand-text">
-                <h5>MOJO</h5>
-                <small>Safaris & Tours</small>
-            </div>
+        <div class="sidebar-brand" style="justify-content: center; padding: 1.25rem;">
+            <img src="{{ asset('images/mojo.png') }}" alt="Mojo Logo" style="width: 100%; max-width: 180px; object-fit: contain;">
         </div>
         <div class="sidebar-nav">
             <div class="nav-label">Principal</div>
@@ -836,7 +832,12 @@
                 <button class="btn btn-link d-md-none text-dark p-0" onclick="toggleSidebar()" aria-label="Menu">
                     <i class="bi bi-list fs-4"></i>
                 </button>
-                <h6 class="mb-0">@yield('page-title', 'Dashboard')</h6>
+                <div>
+                    <h6 class="mb-0">@yield('page-title', 'Dashboard')</h6>
+                    @hasSection('page-subtitle')
+                        <div style="font-size: 0.72rem; color: #64748b; margin-top: 0.1rem;">@yield('page-subtitle')</div>
+                    @endif
+                </div>
             </div>
             <div class="dropdown">
                 <button class="btn p-0 d-flex align-items-center gap-2 border-0 bg-transparent" type="button" data-bs-toggle="dropdown" aria-expanded="false">

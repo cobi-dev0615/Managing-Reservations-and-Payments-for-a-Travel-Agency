@@ -2,6 +2,7 @@
 
 @section('title', 'Tours')
 @section('page-title', 'Tours')
+@section('page-subtitle', 'Gerencie todos os tours e pacotes de viagem')
 
 @section('breadcrumb')
 <span class="current">Tours</span>
@@ -9,10 +10,7 @@
 
 @section('content')
 <div class="page-header">
-    <div>
-        <h4><i class="bi bi-map-fill text-primary me-2" style="font-size: 1.1rem;"></i>Tours</h4>
-        <p class="page-header-subtitle mb-0">Gerencie todos os tours e pacotes de viagem</p>
-    </div>
+    <div></div>
     <a href="{{ route('tours.create') }}" class="btn btn-primary">
         <i class="bi bi-plus-lg"></i> Novo Tour
     </a>

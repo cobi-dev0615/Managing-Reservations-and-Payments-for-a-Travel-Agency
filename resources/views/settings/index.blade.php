@@ -2,18 +2,13 @@
 
 @section('title', 'Configuracoes')
 @section('page-title', 'Configuracoes')
+@section('page-subtitle', 'Ajuste as configuracoes do sistema')
 
 @section('breadcrumb')
 <span class="current">Configuracoes</span>
 @endsection
 
 @section('content')
-<div class="page-header">
-    <div>
-        <h4><i class="bi bi-gear-fill text-primary me-2" style="font-size: 1.1rem;"></i>Configuracoes</h4>
-        <p class="page-header-subtitle mb-0">Ajuste as configuracoes do sistema</p>
-    </div>
-</div>
 
 <form method="POST" action="{{ route('settings.update') }}">
     @csrf

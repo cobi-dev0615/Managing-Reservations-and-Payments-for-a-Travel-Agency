@@ -2,6 +2,7 @@
 
 @section('title', $client->name)
 @section('page-title', $client->name)
+@section('page-subtitle', $client->email)
 
 @section('breadcrumb')
 <a href="{{ route('clients.index') }}">Clientes</a> <span class="separator">/</span> <span class="current">{{ $client->name }}</span>
@@ -9,10 +10,7 @@
 
 @section('content')
 <div class="page-header">
-    <div>
-        <h4>{{ $client->name }}</h4>
-        <p class="page-header-subtitle mb-0">{{ $client->email }}</p>
-    </div>
+    <div></div>
     <div class="d-flex gap-2">
         <a href="{{ route('clients.edit', $client) }}" class="btn btn-outline-secondary">
             <i class="bi bi-pencil"></i> Editar

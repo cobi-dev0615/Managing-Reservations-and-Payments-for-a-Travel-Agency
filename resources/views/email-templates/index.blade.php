@@ -2,6 +2,7 @@
 
 @section('title', 'Templates de E-mail')
 @section('page-title', 'Templates de E-mail')
+@section('page-subtitle', 'Configure os modelos de e-mail enviados aos clientes')
 
 @section('breadcrumb')
 <span class="current">Templates de E-mail</span>
@@ -9,10 +10,7 @@
 
 @section('content')
 <div class="page-header">
-    <div>
-        <h4><i class="bi bi-envelope-paper-fill text-primary me-2" style="font-size: 1.1rem;"></i>Templates de E-mail</h4>
-        <p class="page-header-subtitle mb-0">Configure os modelos de e-mail enviados aos clientes</p>
-    </div>
+    <div></div>
     <a href="{{ route('email-templates.create') }}" class="btn btn-primary">
         <i class="bi bi-plus-lg"></i> Novo Template
     </a>

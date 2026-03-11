@@ -2,6 +2,7 @@
 
 @section('title', 'Clientes')
 @section('page-title', 'Clientes')
+@section('page-subtitle', 'Gerencie sua base de clientes')
 
 @section('breadcrumb')
 <span class="current">Clientes</span>
@@ -9,10 +10,7 @@
 
 @section('content')
 <div class="page-header">
-    <div>
-        <h4><i class="bi bi-people-fill text-primary me-2" style="font-size: 1.1rem;"></i>Clientes</h4>
-        <p class="page-header-subtitle mb-0">Gerencie sua base de clientes</p>
-    </div>
+    <div></div>
     <a href="{{ route('clients.create') }}" class="btn btn-primary">
         <i class="bi bi-plus-lg"></i> Novo Cliente
     </a>

@@ -25,35 +25,6 @@
             width: 100%;
             max-width: 420px;
         }
-        .auth-brand {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        .auth-brand-icon {
-            width: 56px;
-            height: 56px;
-            background: linear-gradient(135deg, #3b82f6, #6366f1);
-            border-radius: 16px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
-        }
-        .auth-brand h2 {
-            color: #f1f5f9;
-            font-weight: 800;
-            font-size: 1.5rem;
-            letter-spacing: -0.02em;
-            margin: 0;
-        }
-        .auth-brand p {
-            color: #64748b;
-            font-size: 0.85rem;
-            margin-top: 0.25rem;
-        }
         .auth-card {
             background: #fff;
             border-radius: 1rem;
@@ -61,12 +32,11 @@
             padding: 2rem;
             border: 1px solid rgba(255,255,255,0.1);
         }
-        .auth-card h5 {
-            font-weight: 700;
-            font-size: 1.1rem;
-            color: #0f172a;
-            margin-bottom: 1.5rem;
+        .auth-logo {
             text-align: center;
+            padding-bottom: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #f1f5f9;
         }
         .form-label {
             font-size: 0.8rem;
@@ -99,17 +69,19 @@
         }
         .auth-footer {
             text-align: center;
-            margin-top: 1.5rem;
-            color: #64748b;
+            margin-top: 1.25rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid #f1f5f9;
+            color: #6b7280;
             font-size: 0.84rem;
         }
         .auth-footer a {
-            color: #60a5fa;
+            color: var(--primary);
             text-decoration: none;
             font-weight: 600;
         }
         .auth-footer a:hover {
-            color: #93bbfd;
+            color: var(--primary-dark);
         }
         .alert {
             border-radius: 0.5rem;
@@ -119,7 +91,6 @@
             color: #991b1b;
             border-left: 4px solid #ef4444;
         }
-        .form-check-label { font-size: 0.84rem; color: #475569; }
         .input-group-text {
             background: #f9fafb;
             border-color: #d1d5db;
@@ -129,14 +100,10 @@
 </head>
 <body>
     <div class="auth-container">
-        <div class="auth-brand">
-            <img src="{{ asset('images/mojo.png') }}" alt="Mojo Logo" style="width: 80px; height: 80px; object-fit: contain; margin-bottom: 0.75rem;">
-            <h2>MOJO</h2>
-            <p>Safaris & Tours</p>
-        </div>
-
         <div class="auth-card">
-            <h5>Criar nova conta</h5>
+            <div class="auth-logo">
+                <img src="{{ asset('images/mojo.png') }}" alt="Mojo Logo" style="width: 180px; object-fit: contain;">
+            </div>
 
             @if($errors->any())
                 <div class="alert mb-3 py-2">
@@ -185,10 +152,10 @@
                     <i class="bi bi-person-plus me-1"></i> Criar Conta
                 </button>
             </form>
-        </div>
 
-        <div class="auth-footer">
-            Ja tem conta? <a href="{{ route('login') }}">Entrar</a>
+            <div class="auth-footer">
+                Ja tem conta? <a href="{{ route('login') }}">Entrar</a>
+            </div>
         </div>
     </div>
 </body>

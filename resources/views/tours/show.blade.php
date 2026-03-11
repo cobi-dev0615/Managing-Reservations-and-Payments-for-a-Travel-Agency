@@ -3,19 +3,18 @@
 @section('title', $tour->name)
 @section('page-title', $tour->name)
 
+@section('page-subtitle')
+<code class="text-primary">{{ $tour->code }}</code>
+<span class="status-badge status-{{ $tour->status }} ms-2">{{ ucfirst($tour->status) }}</span>
+@endsection
+
 @section('breadcrumb')
 <a href="{{ route('tours.index') }}">Tours</a> <span class="separator">/</span> <span class="current">{{ $tour->name }}</span>
 @endsection
 
 @section('content')
 <div class="page-header">
-    <div>
-        <h4>{{ $tour->name }}</h4>
-        <p class="page-header-subtitle mb-0">
-            <code class="text-primary">{{ $tour->code }}</code>
-            <span class="status-badge status-{{ $tour->status }} ms-2">{{ ucfirst($tour->status) }}</span>
-        </p>
-    </div>
+    <div></div>
     <div class="d-flex gap-2">
         <a href="{{ route('tours.edit', $tour) }}" class="btn btn-outline-secondary">
             <i class="bi bi-pencil"></i> Editar
