@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>MOJO - @yield('title', 'Safaris & Tours')</title>
+    <title>MOJO Safaris & Tours</title>
     <link rel="icon" href="{{ asset('images/mojo.png') }}" type="image/png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" crossorigin="anonymous">
@@ -880,6 +880,11 @@
             border-color: var(--sidebar-active);
         }
 
+        [data-theme="dark"] .table {
+            background: #0f172a;
+            color: #cbd5e1;
+        }
+
         [data-theme="dark"] .table th {
             background: #162032;
             color: #94a3b8;
@@ -887,12 +892,25 @@
         }
 
         [data-theme="dark"] .table td {
+            background: #0f172a;
             color: #cbd5e1;
             border-bottom-color: #1e293b !important;
         }
 
-        [data-theme="dark"] .table-hover tbody tr:hover {
-            background-color: rgba(30, 41, 59, 0.5) !important;
+        [data-theme="dark"] .table-striped > tbody > tr:nth-of-type(odd) > * {
+            background: #131d30;
+            color: #cbd5e1;
+        }
+
+        [data-theme="dark"] .table {
+            --bs-table-hover-bg: #1e293b;
+            --bs-table-hover-color: #cbd5e1;
+        }
+
+        [data-theme="dark"] .table-hover tbody tr:hover,
+        [data-theme="dark"] .table-hover tbody tr:hover > * {
+            background-color: #1e293b !important;
+            color: #cbd5e1 !important;
         }
 
         [data-theme="dark"] .dropdown-menu {
