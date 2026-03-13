@@ -8,9 +8,11 @@
 <div class="page-header">
     <div></div>
     <div class="d-flex gap-2">
+        @if(auth()->user()->canManage())
         <a href="{{ route('clients.edit', $client) }}" class="btn btn-outline-secondary">
             <i class="bi bi-pencil"></i> Editar
         </a>
+        @endif
         <a href="{{ route('clients.index') }}" class="btn btn-outline-primary">
             <i class="bi bi-arrow-left"></i> Voltar
         </a>
@@ -44,9 +46,11 @@
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
         <span><i class="bi bi-journal-bookmark me-1"></i> Reservas do Cliente</span>
+        @if(auth()->user()->canManage())
         <a href="{{ route('bookings.create', ['client_id' => $client->id]) }}" class="btn btn-sm btn-primary">
             <i class="bi bi-plus-lg"></i> Nova Reserva
         </a>
+        @endif
     </div>
     <div class="table-responsive">
         <table class="table table-hover mb-0">

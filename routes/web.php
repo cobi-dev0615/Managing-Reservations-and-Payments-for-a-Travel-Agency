@@ -34,38 +34,66 @@ Route::middleware('auth')->group(function () {
     Route::put('perfil', [ProfileController::class, 'update'])->name('profile.update');
     Route::put('perfil/senha', [ProfileController::class, 'updatePassword'])->name('profile.password');
 
-    // Tours
-    Route::resource('tours', TourController::class);
-    Route::post('tours/{tour}/toggle-status', [TourController::class, 'toggleStatus'])->name('tours.toggle-status');
+    // Tours — everyone can view, only admin & manager can create/edit/delete
+    Route::get('tours', [TourController::class, 'index'])->name('tours.index');
+    Route::get('tours/{tour}', [TourController::class, 'show'])->name('tours.show');
+    Route::middleware('can.manage')->group(function () {
+        Route::get('tours/create', [TourController::class, 'create'])->name('tours.create');
+        Route::post('tours', [TourController::class, 'store'])->name('tours.store');
+        Route::get('tours/{tour}/edit', [TourController::class, 'edit'])->name('tours.edit');
+        Route::put('tours/{tour}', [TourController::class, 'update'])->name('tours.update');
+        Route::delete('tours/{tour}', [TourController::class, 'destroy'])->name('tours.destroy');
+        Route::post('tours/{tour}/toggle-status', [TourController::class, 'toggleStatus'])->name('tours.toggle-status');
+    });
 
-    // Clients
-    Route::resource('clients', ClientController::class);
+    // Clients — everyone can view, only admin & manager can create/edit/delete
+    Route::get('clients', [ClientController::class, 'index'])->name('clients.index');
+    Route::get('clients/{client}', [ClientController::class, 'show'])->name('clients.show');
+    Route::middleware('can.manage')->group(function () {
+        Route::get('clients/create', [ClientController::class, 'create'])->name('clients.create');
+        Route::post('clients', [ClientController::class, 'store'])->name('clients.store');
+        Route::get('clients/{client}/edit', [ClientController::class, 'edit'])->name('clients.edit');
+        Route::put('clients/{client}', [ClientController::class, 'update'])->name('clients.update');
+        Route::delete('clients/{client}', [ClientController::class, 'destroy'])->name('clients.destroy');
+    });
 
-    // Bookings
-    Route::resource('bookings', BookingController::class);
+    // Bookings — everyone can view, only admin & manager can create/edit/delete
+    Route::get('bookings', [BookingController::class, 'index'])->name('bookings.index');
+    Route::get('bookings/{booking}', [BookingController::class, 'show'])->name('bookings.show');
+    Route::middleware('can.manage')->group(function () {
+        Route::get('bookings/create', [BookingController::class, 'create'])->name('bookings.create');
+        Route::post('bookings', [BookingController::class, 'store'])->name('bookings.store');
+        Route::get('bookings/{booking}/edit', [BookingController::class, 'edit'])->name('bookings.edit');
+        Route::put('bookings/{booking}', [BookingController::class, 'update'])->name('bookings.update');
+        Route::delete('bookings/{booking}', [BookingController::class, 'destroy'])->name('bookings.destroy');
+    });
 
-    // Installments
-    Route::post('bookings/{booking}/installments', [InstallmentController::class, 'store'])->name('installments.store');
-    Route::put('installments/{installment}', [InstallmentController::class, 'update'])->name('installments.update');
-    Route::delete('installments/{installment}', [InstallmentController::class, 'destroy'])->name('installments.destroy');
-    Route::post('installments/{installment}/mark-paid', [InstallmentController::class, 'markPaid'])->name('installments.mark-paid');
-    Route::post('installments/{installment}/resend-email', [InstallmentController::class, 'resendEmail'])->name('installments.resend-email');
-    Route::post('installments/{installment}/toggle-email', [InstallmentController::class, 'toggleEmail'])->name('installments.toggle-email');
+    // Installments — only admin & manager
+    Route::middleware('can.manage')->group(function () {
+        Route::post('bookings/{booking}/installments', [InstallmentController::class, 'store'])->name('installments.store');
+        Route::put('installments/{installment}', [InstallmentController::class, 'update'])->name('installments.update');
+        Route::delete('installments/{installment}', [InstallmentController::class, 'destroy'])->name('installments.destroy');
+        Route::post('installments/{installment}/mark-paid', [InstallmentController::class, 'markPaid'])->name('installments.mark-paid');
+        Route::post('installments/{installment}/resend-email', [InstallmentController::class, 'resendEmail'])->name('installments.resend-email');
+        Route::post('installments/{installment}/toggle-email', [InstallmentController::class, 'toggleEmail'])->name('installments.toggle-email');
+    });
 
-    // Payment Cockpit
+    // Payment Cockpit — everyone can view
     Route::get('pagamentos', [PaymentCockpitController::class, 'index'])->name('payments.index');
 
-    // Email Templates
-    Route::resource('email-templates', EmailTemplateController::class);
-    Route::get('email-templates/{email_template}/preview', [EmailTemplateController::class, 'preview'])->name('email-templates.preview');
+    // Email Templates — admin & manager only
+    Route::middleware('can.manage')->group(function () {
+        Route::resource('email-templates', EmailTemplateController::class);
+        Route::get('email-templates/{email_template}/preview', [EmailTemplateController::class, 'preview'])->name('email-templates.preview');
+    });
 
-    // Settings (admin & manager only)
+    // Settings — admin & manager only
     Route::middleware('can.manage')->group(function () {
         Route::get('configuracoes', [SettingController::class, 'index'])->name('settings.index');
         Route::put('configuracoes', [SettingController::class, 'update'])->name('settings.update');
     });
 
-    // Logs (admin & manager only)
+    // Logs — admin & manager only
     Route::middleware('can.manage')->group(function () {
         Route::get('logs', [LogController::class, 'index'])->name('logs.index');
     });

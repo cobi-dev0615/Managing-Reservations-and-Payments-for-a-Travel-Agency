@@ -12,9 +12,11 @@
 <div class="page-header">
     <div></div>
     <div class="d-flex gap-2">
+        @if(auth()->user()->canManage())
         <a href="{{ route('bookings.edit', $booking) }}" class="btn btn-outline-secondary">
             <i class="bi bi-pencil"></i> Editar
         </a>
+        @endif
         <a href="{{ route('bookings.index') }}" class="btn btn-outline-primary">
             <i class="bi bi-arrow-left"></i> Voltar
         </a>
@@ -104,9 +106,11 @@
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
         <span><i class="bi bi-credit-card me-1"></i> Parcelas</span>
+        @if(auth()->user()->canManage())
         <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addInstallmentModal">
             <i class="bi bi-plus-lg"></i> Adicionar Parcela
         </button>
+        @endif
     </div>
 
     {{-- Summary --}}
@@ -174,6 +178,7 @@
                             @endif
                         </td>
                         <td>
+                            @if(auth()->user()->canManage())
                             <div class="d-flex gap-1 flex-wrap">
                                 @if($resolvedStatus !== 'pago')
                                     <form action="{{ route('installments.mark-paid', $installment) }}" method="POST" class="d-inline">
@@ -199,6 +204,7 @@
                                     <i class="bi bi-trash3"></i>
                                 </button>
                             </div>
+                            @endif
                         </td>
                     </tr>
                 @empty

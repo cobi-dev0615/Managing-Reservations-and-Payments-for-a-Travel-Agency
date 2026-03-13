@@ -1231,6 +1231,7 @@
                 <i class="bi bi-credit-card-2-front-fill"></i> Pagamentos
             </a>
 
+            @if(auth()->user()?->canManage())
             <div class="nav-label">Sistema</div>
             <a href="{{ route('email-templates.index') }}" class="nav-link {{ request()->routeIs('email-templates.*') ? 'active' : '' }}">
                 <i class="bi bi-envelope-paper-fill"></i> Templates de E-mail
@@ -1241,6 +1242,7 @@
             <a href="{{ route('logs.index') }}" class="nav-link {{ request()->routeIs('logs.*') ? 'active' : '' }}">
                 <i class="bi bi-clock-history"></i> Logs
             </a>
+            @endif
 
             @if(auth()->user()?->isAdmin())
                 <div class="nav-label">Administracao</div>

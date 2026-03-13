@@ -7,9 +7,11 @@
 @section('content')
 <div class="page-header">
     <div></div>
+    @if(auth()->user()->canManage())
     <a href="{{ route('tours.create') }}" class="btn btn-primary">
         <i class="bi bi-plus-lg"></i> Novo Tour
     </a>
+    @endif
 </div>
 
 {{-- Filtros --}}
@@ -115,6 +117,7 @@
                                 <a href="{{ route('tours.show', $tour) }}" class="btn btn-sm btn-outline-primary btn-action" title="Ver">
                                     <i class="bi bi-eye"></i>
                                 </a>
+                                @if(auth()->user()->canManage())
                                 <a href="{{ route('tours.edit', $tour) }}" class="btn btn-sm btn-outline-secondary btn-action" title="Editar">
                                     <i class="bi bi-pencil"></i>
                                 </a>
@@ -124,6 +127,7 @@
                                         <i class="bi bi-arrow-repeat"></i>
                                     </button>
                                 </form>
+                                @endif
                             </div>
                         </td>
                     </tr>

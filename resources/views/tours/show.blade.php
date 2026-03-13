@@ -12,9 +12,11 @@
 <div class="page-header">
     <div></div>
     <div class="d-flex gap-2">
+        @if(auth()->user()->canManage())
         <a href="{{ route('tours.edit', $tour) }}" class="btn btn-outline-secondary">
             <i class="bi bi-pencil"></i> Editar
         </a>
+        @endif
         <a href="{{ route('tours.index') }}" class="btn btn-outline-primary">
             <i class="bi bi-arrow-left"></i> Voltar
         </a>

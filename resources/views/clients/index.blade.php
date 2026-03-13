@@ -7,9 +7,11 @@
 @section('content')
 <div class="page-header">
     <div></div>
+    @if(auth()->user()->canManage())
     <a href="{{ route('clients.create') }}" class="btn btn-primary">
         <i class="bi bi-plus-lg"></i> Novo Cliente
     </a>
+    @endif
 </div>
 
 {{-- Busca --}}
@@ -63,12 +65,14 @@
                                 <a href="{{ route('clients.show', $client) }}" class="btn btn-sm btn-outline-primary btn-action" title="Ver">
                                     <i class="bi bi-eye"></i>
                                 </a>
+                                @if(auth()->user()->canManage())
                                 <a href="{{ route('clients.edit', $client) }}" class="btn btn-sm btn-outline-secondary btn-action" title="Editar">
                                     <i class="bi bi-pencil"></i>
                                 </a>
                                 <button type="button" class="btn btn-sm btn-outline-danger btn-action" title="Excluir" onclick="confirmDelete('{{ route('clients.destroy', $client) }}', 'Tem certeza que deseja excluir o cliente {{ $client->name }}?')">
                                     <i class="bi bi-trash3"></i>
                                 </button>
+                                @endif
                             </div>
                         </td>
                     </tr>

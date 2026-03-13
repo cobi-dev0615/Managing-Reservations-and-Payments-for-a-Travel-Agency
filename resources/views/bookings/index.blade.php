@@ -7,9 +7,11 @@
 @section('content')
 <div class="page-header">
     <div></div>
+    @if(auth()->user()->canManage())
     <a href="{{ route('bookings.create') }}" class="btn btn-primary">
         <i class="bi bi-plus-lg"></i> Nova Reserva
     </a>
+    @endif
 </div>
 
 {{-- Filtros --}}
@@ -93,12 +95,14 @@
                                 <a href="{{ route('bookings.show', $booking) }}" class="btn btn-sm btn-outline-primary btn-action" title="Ver">
                                     <i class="bi bi-eye"></i>
                                 </a>
+                                @if(auth()->user()->canManage())
                                 <a href="{{ route('bookings.edit', $booking) }}" class="btn btn-sm btn-outline-secondary btn-action" title="Editar">
                                     <i class="bi bi-pencil"></i>
                                 </a>
                                 <button type="button" class="btn btn-sm btn-outline-danger btn-action" title="Excluir" onclick="confirmDelete('{{ route('bookings.destroy', $booking) }}', 'Tem certeza que deseja excluir esta reserva?')">
                                     <i class="bi bi-trash3"></i>
                                 </button>
+                                @endif
                             </div>
                         </td>
                     </tr>
