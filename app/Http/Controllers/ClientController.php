@@ -20,7 +20,8 @@ class ClientController extends Controller
             });
         }
 
-        $clients = $query->orderBy('name')->paginate(15)->withQueryString();
+        $perPage = in_array((int) $request->input('per_page'), [10, 25, 50, 100]) ? (int) $request->input('per_page') : 10;
+        $clients = $query->orderBy('name')->paginate($perPage)->withQueryString();
 
         return view('clients.index', compact('clients'));
     }

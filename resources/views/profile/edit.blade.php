@@ -49,11 +49,8 @@
                     </div>
 
                     <div class="mb-4">
-                        <label for="email" class="form-label">E-mail <span class="text-danger">*</span></label>
-                        <input type="email" name="email" id="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email', $user->email) }}" required>
-                        @error('email')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                        <label for="email" class="form-label">E-mail</label>
+                        <input type="email" id="email" class="form-control" value="{{ $user->email }}" disabled>
                     </div>
 
                     <button type="submit" class="btn btn-primary">

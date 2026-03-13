@@ -15,12 +15,20 @@
 {{-- Busca --}}
 <div class="filter-bar">
     <form method="GET" action="{{ route('clients.index') }}" class="row g-3 align-items-end">
-        <div class="col-md-10">
+        <div class="col-md-8">
             <label for="search" class="form-label">Buscar</label>
             <div class="input-group">
                 <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
                 <input type="text" name="search" id="search" class="form-control border-start-0" placeholder="Buscar por nome ou e-mail..." value="{{ request('search') }}">
             </div>
+        </div>
+        <div class="col-md-2">
+            <label for="per_page" class="form-label">Exibir</label>
+            <select name="per_page" id="per_page" class="form-select">
+                @foreach([10, 25, 50, 100] as $size)
+                    <option value="{{ $size }}" {{ request('per_page', 10) == $size ? 'selected' : '' }}>{{ $size }}</option>
+                @endforeach
+            </select>
         </div>
         <div class="col-md-2">
             <button type="submit" class="btn btn-secondary w-100">

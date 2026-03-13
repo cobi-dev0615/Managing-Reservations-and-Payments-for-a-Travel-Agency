@@ -161,6 +161,57 @@
     </div>
 </div>
 
+{{-- Charts --}}
+<div class="row g-3 mb-4">
+    {{-- Monthly Revenue --}}
+    <div class="col-lg-8">
+        <div class="card h-100">
+            <div class="card-header d-flex align-items-center gap-2">
+                <i class="bi bi-bar-chart-fill text-success me-1"></i> Receita Mensal (Ultimos 6 Meses)
+            </div>
+            <div class="card-body">
+                <canvas id="revenueChart" height="260"></canvas>
+            </div>
+        </div>
+    </div>
+    {{-- Payment Status --}}
+    <div class="col-lg-4">
+        <div class="card h-100">
+            <div class="card-header d-flex align-items-center gap-2">
+                <i class="bi bi-pie-chart-fill text-primary me-1"></i> Status dos Pagamentos
+            </div>
+            <div class="card-body d-flex align-items-center justify-content-center">
+                <canvas id="paymentStatusChart" height="240"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    {{-- Bookings per Month --}}
+    <div class="col-lg-8">
+        <div class="card h-100">
+            <div class="card-header d-flex align-items-center gap-2">
+                <i class="bi bi-graph-up text-info me-1"></i> Reservas por Mes (Ultimos 6 Meses)
+            </div>
+            <div class="card-body">
+                <canvas id="bookingsChart" height="260"></canvas>
+            </div>
+        </div>
+    </div>
+    {{-- Tours by Type --}}
+    <div class="col-lg-4">
+        <div class="card h-100">
+            <div class="card-header d-flex align-items-center gap-2">
+                <i class="bi bi-compass-fill text-warning me-1"></i> Tours por Tipo
+            </div>
+            <div class="card-body d-flex align-items-center justify-content-center">
+                <canvas id="tourTypeChart" height="240"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="row g-3">
     {{-- Upcoming Installments --}}
     <div class="col-lg-6">
@@ -257,7 +308,7 @@
                                     <span class="fw-medium">{{ number_format($inst->amount, 2, ',', '.') }}</span>
                                 </td>
                                 <td>
-                                    @php $overdueDays = $inst->due_date->diffInDays(now()); @endphp
+                                    @php $overdueDays = (int) $inst->due_date->diffInDays(now()); @endphp
                                     <span class="badge bg-danger" style="font-size: 0.68rem;">{{ $overdueDays == 0 ? '< 1 dia' : $overdueDays . 'd' }}</span>
                                 </td>
                             </tr>
@@ -330,3 +381,182 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const gridColor = isDark ? 'rgba(59,130,246,0.08)' : 'rgba(0,0,0,0.06)';
+    const textColor = isDark ? '#94a3b8' : '#64748b';
+    const tooltipBg = isDark ? 'rgba(10,18,45,0.92)' : 'rgba(15,23,42,0.9)';
+
+    Chart.defaults.font.family = "'Inter', sans-serif";
+    Chart.defaults.font.size = 12;
+    Chart.defaults.color = textColor;
+    Chart.defaults.plugins.legend.labels.usePointStyle = true;
+    Chart.defaults.plugins.legend.labels.pointStyleWidth = 8;
+    Chart.defaults.plugins.tooltip.backgroundColor = tooltipBg;
+    Chart.defaults.plugins.tooltip.cornerRadius = 8;
+    Chart.defaults.plugins.tooltip.padding = 10;
+    Chart.defaults.plugins.tooltip.titleFont = { weight: '600', size: 13 };
+
+    // --- 1) Monthly Revenue (Bar) ---
+    const revenueLabels = @json($revenueLabels);
+    const revenueDatasets = [];
+    const currencyStyles = {
+        BRL: { bg: 'rgba(34,197,94,0.7)', border: '#22c55e', hoverBg: 'rgba(34,197,94,0.9)' },
+        USD: { bg: 'rgba(59,130,246,0.7)', border: '#3b82f6', hoverBg: 'rgba(59,130,246,0.9)' },
+        EUR: { bg: 'rgba(245,158,11,0.7)', border: '#f59e0b', hoverBg: 'rgba(245,158,11,0.9)' },
+    };
+    @foreach($revenueData as $currency => $values)
+        revenueDatasets.push({
+            label: '{{ $currency }}',
+            data: @json($values),
+            backgroundColor: currencyStyles['{{ $currency }}'].bg,
+            borderColor: currencyStyles['{{ $currency }}'].border,
+            hoverBackgroundColor: currencyStyles['{{ $currency }}'].hoverBg,
+            borderWidth: 2,
+            borderRadius: 6,
+            borderSkipped: false,
+        });
+    @endforeach
+
+    new Chart(document.getElementById('revenueChart'), {
+        type: 'bar',
+        data: { labels: revenueLabels, datasets: revenueDatasets },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: { intersect: false, mode: 'index' },
+            scales: {
+                x: { grid: { display: false }, ticks: { color: textColor } },
+                y: {
+                    beginAtZero: true,
+                    grid: { color: gridColor },
+                    ticks: { color: textColor, callback: v => v.toLocaleString('pt-BR') },
+                },
+            },
+            plugins: {
+                legend: { display: revenueDatasets.length > 1 },
+                tooltip: {
+                    callbacks: {
+                        label: ctx => ctx.dataset.label + ': ' + ctx.parsed.y.toLocaleString('pt-BR', { minimumFractionDigits: 2 }),
+                    },
+                },
+            },
+        },
+    });
+
+    // --- 2) Payment Status (Doughnut) ---
+    const statusLabels = @json(array_keys($paymentStatusChart));
+    const statusValues = @json(array_values($paymentStatusChart));
+    const statusColors = ['#f59e0b', '#22c55e', '#ef4444', '#6366f1'];
+
+    new Chart(document.getElementById('paymentStatusChart'), {
+        type: 'doughnut',
+        data: {
+            labels: statusLabels,
+            datasets: [{
+                data: statusValues,
+                backgroundColor: statusColors.map(c => c + 'cc'),
+                borderColor: statusColors,
+                borderWidth: 2,
+                hoverOffset: 6,
+            }],
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '62%',
+            plugins: {
+                legend: { position: 'bottom', labels: { padding: 16 } },
+                tooltip: {
+                    callbacks: {
+                        label: ctx => {
+                            const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                            const pct = total > 0 ? ((ctx.parsed / total) * 100).toFixed(1) : 0;
+                            return ctx.label + ': ' + ctx.parsed + ' (' + pct + '%)';
+                        },
+                    },
+                },
+            },
+        },
+    });
+
+    // --- 3) Bookings per Month (Line) ---
+    const bookingsLabels = @json($bookingsLabels);
+    const bookingsData = @json($bookingsData);
+
+    new Chart(document.getElementById('bookingsChart'), {
+        type: 'line',
+        data: {
+            labels: bookingsLabels,
+            datasets: [{
+                label: 'Reservas',
+                data: bookingsData,
+                borderColor: '#3b82f6',
+                backgroundColor: isDark ? 'rgba(59,130,246,0.1)' : 'rgba(59,130,246,0.08)',
+                borderWidth: 3,
+                fill: true,
+                tension: 0.35,
+                pointBackgroundColor: '#3b82f6',
+                pointBorderColor: isDark ? '#0f172a' : '#ffffff',
+                pointBorderWidth: 3,
+                pointRadius: 5,
+                pointHoverRadius: 7,
+            }],
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: { intersect: false, mode: 'index' },
+            scales: {
+                x: { grid: { display: false }, ticks: { color: textColor } },
+                y: {
+                    beginAtZero: true,
+                    grid: { color: gridColor },
+                    ticks: { color: textColor, stepSize: 1 },
+                },
+            },
+            plugins: { legend: { display: false } },
+        },
+    });
+
+    // --- 4) Tours by Type (Doughnut) ---
+    const tourLabels = @json(array_keys($tourTypeChart));
+    const tourValues = @json(array_values($tourTypeChart));
+    const tourColors = ['#3b82f6', '#8b5cf6', '#f59e0b', '#ec4899'];
+
+    new Chart(document.getElementById('tourTypeChart'), {
+        type: 'doughnut',
+        data: {
+            labels: tourLabels,
+            datasets: [{
+                data: tourValues,
+                backgroundColor: tourColors.map(c => c + 'cc'),
+                borderColor: tourColors,
+                borderWidth: 2,
+                hoverOffset: 6,
+            }],
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '62%',
+            plugins: {
+                legend: { position: 'bottom', labels: { padding: 16 } },
+                tooltip: {
+                    callbacks: {
+                        label: ctx => {
+                            const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                            const pct = total > 0 ? ((ctx.parsed / total) * 100).toFixed(1) : 0;
+                            return ctx.label + ': ' + ctx.parsed + ' (' + pct + '%)';
+                        },
+                    },
+                },
+            },
+        },
+    });
+});
+</script>
+@endpush

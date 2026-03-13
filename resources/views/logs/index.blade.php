@@ -62,7 +62,7 @@
             <table class="table table-hover mb-0">
                 <thead>
                     <tr>
-                        <th>Data/Hora</th>
+                        <th>Data</th>
                         <th>Cliente</th>
                         <th>Template</th>
                         <th>Assunto</th>
@@ -74,7 +74,7 @@
                 <tbody>
                     @forelse($emailLogs as $log)
                         <tr>
-                            <td><span class="timestamp-muted">{{ $log->sent_at ? $log->sent_at->format('d/m/Y H:i') : '-' }}</span></td>
+                            <td><span class="timestamp-muted">{{ $log->sent_at ? $log->sent_at->format('d/m/Y') : '-' }}</span></td>
                             <td class="fw-medium">{{ $log->client->name ?? 'N/A' }}</td>
                             <td>{{ $log->template->name ?? 'N/A' }}</td>
                             <td class="text-muted">{{ Str::limit($log->subject, 50) }}</td>
@@ -121,7 +121,7 @@
                                             </div>
                                             <div class="detail-row">
                                                 <div class="detail-label">Enviado em</div>
-                                                <div class="detail-value">{{ $log->sent_at ? $log->sent_at->format('d/m/Y H:i:s') : '-' }}</div>
+                                                <div class="detail-value">{{ $log->sent_at ? $log->sent_at->format('d/m/Y') : '-' }}</div>
                                             </div>
                                         </div>
                                         <hr>
@@ -198,7 +198,6 @@
                         <th>Entidade</th>
                         <th>ID</th>
                         <th>IP</th>
-                        <th>Detalhes</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -209,39 +208,10 @@
                             <td><span class="count-badge">{{ $log->entity_type }}</span></td>
                             <td class="text-muted">{{ $log->entity_id ?? '-' }}</td>
                             <td><span class="timestamp-muted">{{ $log->ip_address ?? '-' }}</span></td>
-                            <td>
-                                @if($log->details)
-                                    <button type="button" class="btn btn-sm btn-outline-primary btn-action" data-bs-toggle="modal" data-bs-target="#activityModal{{ $log->id }}" title="Ver detalhes">
-                                        <i class="bi bi-code-slash"></i>
-                                    </button>
-
-                                    {{-- Modal for activity details --}}
-                                    <div class="modal fade" id="activityModal{{ $log->id }}" tabindex="-1" aria-labelledby="activityModalLabel{{ $log->id }}" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="activityModalLabel{{ $log->id }}">
-                                                        <i class="bi bi-code-slash me-1"></i> {{ $log->action }} ({{ $log->entity_type }})
-                                                    </h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <pre style="white-space: pre-wrap; font-size: 0.82rem; padding: 1rem; background: #f8fafc; border-radius: 0.5rem; border: 1px solid #e2e8f0; margin: 0;">{{ json_encode($log->details, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}</pre>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fechar</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @else
-                                    <span class="text-muted">-</span>
-                                @endif
-                            </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6">
+                            <td colspan="5">
                                 <div class="empty-state">
                                     <i class="bi bi-clock-history"></i>
                                     <p>Nenhum log de atividade encontrado.</p>

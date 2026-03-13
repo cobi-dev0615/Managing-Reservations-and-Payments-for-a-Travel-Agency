@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Installment;
 use App\Models\Booking;
+use App\Models\Tour;
 use App\Models\ActivityLog;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -70,13 +72,88 @@ class DashboardController extends Controller
             'concluido' => Booking::where('status', 'concluido')->count(),
         ];
 
+        // === CHART DATA ===
+
+        // 1) Monthly Revenue — paid installments over last 6 months
+        $sixMonthsAgo = $today->copy()->subMonths(5)->startOfMonth();
+        $monthlyRevenue = Installment::where('installments.status', 'pago')
+            ->where('installments.paid_at', '>=', $sixMonthsAgo)
+            ->join('bookings', 'installments.booking_id', '=', 'bookings.id')
+            ->selectRaw("DATE_FORMAT(installments.paid_at, '%Y-%m') as month, bookings.currency, SUM(installments.amount) as total")
+            ->groupBy('month', 'currency')
+            ->orderBy('month')
+            ->get();
+
+        // Build labels (last 6 months)
+        $revenueLabels = [];
+        $revenueData = ['BRL' => [], 'USD' => [], 'EUR' => []];
+        for ($i = 5; $i >= 0; $i--) {
+            $m = $today->copy()->subMonths($i);
+            $key = $m->format('Y-m');
+            $revenueLabels[] = $m->translatedFormat('M/Y');
+            foreach (['BRL', 'USD', 'EUR'] as $cur) {
+                $found = $monthlyRevenue->first(fn($r) => $r->month === $key && $r->currency === $cur);
+                $revenueData[$cur][] = $found ? round($found->total, 2) : 0;
+            }
+        }
+        // Remove currencies with all zeros
+        $revenueData = array_filter($revenueData, fn($vals) => array_sum($vals) > 0);
+
+        // 2) Payment Status Distribution — all installments
+        $paymentStatusChart = [
+            'Pendente' => Installment::where('status', 'pendente')->count(),
+            'Pago' => Installment::where('status', 'pago')->count(),
+            'Atrasado' => Installment::where('status', 'atrasado')->count(),
+            'Falta Link' => Installment::where('status', 'falta_link')->count(),
+        ];
+
+        // 3) Bookings per Month — last 6 months
+        $monthlyBookings = Booking::where('created_at', '>=', $sixMonthsAgo)
+            ->selectRaw("DATE_FORMAT(created_at, '%Y-%m') as month, COUNT(*) as total")
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get();
+
+        $bookingsLabels = [];
+        $bookingsData = [];
+        for ($i = 5; $i >= 0; $i--) {
+            $m = $today->copy()->subMonths($i);
+            $key = $m->format('Y-m');
+            $bookingsLabels[] = $m->translatedFormat('M/Y');
+            $found = $monthlyBookings->first(fn($r) => $r->month === $key);
+            $bookingsData[] = $found ? $found->total : 0;
+        }
+
+        // 4) Tours by Type
+        $toursByType = Tour::selectRaw("type, COUNT(*) as total")
+            ->groupBy('type')
+            ->pluck('total', 'type')
+            ->toArray();
+
+        $typeLabels = [
+            'grupo' => 'Grupo',
+            'privado' => 'Privado',
+            'agencia' => 'Agencia',
+            'influencer' => 'Influencer',
+        ];
+        $tourTypeChart = [];
+        foreach ($toursByType as $type => $count) {
+            $tourTypeChart[$typeLabels[$type] ?? ucfirst($type)] = $count;
+        }
+
         return view('dashboard.index', compact(
             'statusCounts',
             'currencyTotals',
             'recentActivity',
             'upcomingInstallments',
             'overdueInstallments',
-            'bookingStats'
+            'bookingStats',
+            'revenueLabels',
+            'revenueData',
+            'paymentStatusChart',
+            'bookingsLabels',
+            'bookingsData',
+            'tourTypeChart'
         ));
     }
 }

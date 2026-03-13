@@ -15,16 +15,14 @@ class ProfileController extends Controller
 
     public function update(Request $request)
     {
-        $user = auth()->user();
+        $user = \App\Models\User::find(auth()->id());
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
         ]);
 
-        $user->name = $validated['name'];
-        $user->email = $validated['email'];
-        $user->save();
+        $user->update($validated);
 
         return back()->with('success', 'Perfil atualizado com sucesso.');
     }
@@ -36,9 +34,8 @@ class ProfileController extends Controller
             'password' => ['required', 'confirmed', Password::min(8)],
         ]);
 
-        $user = auth()->user();
-        $user->password = $request->password;
-        $user->save();
+        $user = \App\Models\User::find(auth()->id());
+        $user->update(['password' => $request->password]);
 
         return back()->with('success', 'Senha alterada com sucesso.');
     }
