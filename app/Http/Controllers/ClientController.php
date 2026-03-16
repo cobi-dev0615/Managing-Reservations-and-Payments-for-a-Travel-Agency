@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
+use App\Models\Booking;
 use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 
@@ -11,6 +12,12 @@ class ClientController extends Controller
     public function index(Request $request)
     {
         $query = Client::withCount('bookings');
+
+        // Viewers can only see clients from their own bookings
+        if (auth()->user()->isViewer()) {
+            $myClientIds = Booking::where('created_by', auth()->id())->pluck('client_id')->unique();
+            $query->whereIn('id', $myClientIds);
+        }
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -48,6 +55,13 @@ class ClientController extends Controller
 
     public function show(Client $client)
     {
+        if (auth()->user()->isViewer()) {
+            $hasAccess = Booking::where('created_by', auth()->id())->where('client_id', $client->id)->exists();
+            if (!$hasAccess) {
+                abort(403, 'Acesso nao autorizado.');
+            }
+        }
+
         $client->load('bookings.tour');
 
         return view('clients.show', compact('client'));

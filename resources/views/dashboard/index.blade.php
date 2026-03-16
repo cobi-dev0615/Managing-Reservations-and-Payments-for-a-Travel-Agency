@@ -351,18 +351,14 @@
                         <td>{{ $log->action }}</td>
                         <td>
                             <span class="badge bg-secondary" style="font-size: 0.68rem;">{{ $log->entity_type }}</span>
-                            @if($log->entity_type === 'Tour')
+                            @if($log->entity_type === 'Tour' && $log->entity_id)
                                 <a href="{{ route('tours.show', $log->entity_id) }}" class="text-decoration-none">#{{ $log->entity_id }}</a>
-                            @elseif($log->entity_type === 'Client')
+                            @elseif($log->entity_type === 'Client' && $log->entity_id)
                                 <a href="{{ route('clients.show', $log->entity_id) }}" class="text-decoration-none">#{{ $log->entity_id }}</a>
-                            @elseif($log->entity_type === 'Booking')
+                            @elseif($log->entity_type === 'Booking' && $log->entity_id)
                                 <a href="{{ route('bookings.show', $log->entity_id) }}" class="text-decoration-none">#{{ $log->entity_id }}</a>
-                            @elseif($log->entity_type === 'Installment')
-                                @if($log->booking_id)
-                                    <a href="{{ route('bookings.show', $log->booking_id) }}" class="text-decoration-none">#{{ $log->entity_id }}</a>
-                                @else
-                                    #{{ $log->entity_id }}
-                                @endif
+                            @elseif($log->entity_type === 'Installment' && $log->booking_id)
+                                <a href="{{ route('bookings.show', $log->booking_id) }}" class="text-decoration-none">#{{ $log->entity_id }}</a>
                             @else
                                 #{{ $log->entity_id }}
                             @endif

@@ -123,7 +123,7 @@
                                 </a>
                                 <form action="{{ route('tours.toggle-status', $tour) }}" method="POST" class="d-inline">
                                     @csrf
-                                    <button type="submit" class="btn btn-sm btn-outline-warning btn-action" title="{{ $tour->status === 'ativo' ? 'Desativar' : 'Ativar' }}" onclick="return confirm('Deseja alterar o status deste tour?')">
+                                    <button type="submit" class="btn btn-sm btn-outline-warning btn-action" title="{{ $tour->status === 'ativo' ? 'Desativar' : 'Ativar' }}" data-confirm="Deseja alterar o status deste tour?" data-confirm-title="Alterar Status">
                                         <i class="bi bi-arrow-repeat"></i>
                                     </button>
                                 </form>

@@ -794,6 +794,101 @@
         [data-theme="dark"] .rpms-toast-icon.error { background: rgba(239, 68, 68, 0.15); }
         [data-theme="dark"] .rpms-toast-icon.warning { background: rgba(245, 158, 11, 0.15); }
 
+        /* ===== CONFIRM DIALOG ===== */
+        .confirm-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.45);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        .confirm-overlay.show { opacity: 1; }
+        .confirm-dialog {
+            background: #fff;
+            border-radius: 16px;
+            padding: 32px 28px 24px;
+            min-width: 360px;
+            max-width: 440px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            transform: scale(0.9) translateY(10px);
+            transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
+            text-align: center;
+        }
+        .confirm-overlay.show .confirm-dialog {
+            transform: scale(1) translateY(0);
+        }
+        .confirm-icon {
+            width: 56px; height: 56px;
+            border-radius: 50%;
+            background: rgba(245, 158, 11, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 18px;
+            font-size: 1.5rem;
+            color: #f59e0b;
+        }
+        .confirm-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+        .confirm-message {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+        .confirm-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        .confirm-btn {
+            padding: 10px 28px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .confirm-btn-cancel {
+            background: #f1f5f9;
+            color: #475569;
+        }
+        .confirm-btn-cancel:hover {
+            background: #e2e8f0;
+        }
+        .confirm-btn-ok {
+            background: #f59e0b;
+            color: #fff;
+        }
+        .confirm-btn-ok:hover {
+            background: #d97706;
+        }
+        .confirm-btn-danger {
+            background: #ef4444;
+            color: #fff;
+        }
+        .confirm-btn-danger:hover {
+            background: #dc2626;
+        }
+        [data-theme="dark"] .confirm-dialog {
+            background: rgba(10, 18, 45, 0.95);
+            border: 1px solid rgba(59, 130, 246, 0.12);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+        [data-theme="dark"] .confirm-title { color: #f1f5f9; }
+        [data-theme="dark"] .confirm-message { color: #94a3b8; }
+        [data-theme="dark"] .confirm-btn-cancel { background: rgba(59, 130, 246, 0.1); color: #94a3b8; }
+        [data-theme="dark"] .confirm-btn-cancel:hover { background: rgba(59, 130, 246, 0.18); color: #e2e8f0; }
+
         /* ===== MODAL ===== */
         .modal-content {
             border-radius: var(--radius);
@@ -1195,7 +1290,7 @@
     <script>
         // Apply saved theme immediately to prevent flash
         (function() {
-            var theme = localStorage.getItem('theme') || 'light';
+            var theme = localStorage.getItem('theme') || 'dark';
             document.documentElement.setAttribute('data-theme', theme);
         })();
     </script>
@@ -1440,6 +1535,84 @@
             if (message) document.getElementById('deleteModalMessage').textContent = message;
             new bootstrap.Modal(document.getElementById('deleteModal')).show();
         }
+
+        // Custom confirm dialog
+        function rpmsConfirm(message, options) {
+            options = options || {};
+            var title = options.title || 'Confirmar';
+            var okText = options.okText || 'Confirmar';
+            var cancelText = options.cancelText || 'Cancelar';
+            var type = options.type || 'warning'; // warning, danger
+            var icon = type === 'danger' ? 'bi-exclamation-triangle-fill' : 'bi-question-circle-fill';
+            var iconColor = type === 'danger' ? '#ef4444' : '#f59e0b';
+            var iconBg = type === 'danger' ? 'rgba(239,68,68,0.1)' : 'rgba(245,158,11,0.1)';
+            var btnClass = type === 'danger' ? 'confirm-btn-danger' : 'confirm-btn-ok';
+
+            return new Promise(function(resolve) {
+                var overlay = document.createElement('div');
+                overlay.className = 'confirm-overlay';
+                overlay.innerHTML =
+                    '<div class="confirm-dialog">' +
+                        '<div class="confirm-icon" style="background:' + iconBg + ';color:' + iconColor + '">' +
+                            '<i class="bi ' + icon + '"></i>' +
+                        '</div>' +
+                        '<div class="confirm-title">' + title + '</div>' +
+                        '<div class="confirm-message">' + message + '</div>' +
+                        '<div class="confirm-actions">' +
+                            '<button class="confirm-btn confirm-btn-cancel" id="confirmCancel">' + cancelText + '</button>' +
+                            '<button class="confirm-btn ' + btnClass + '" id="confirmOk">' + okText + '</button>' +
+                        '</div>' +
+                    '</div>';
+                document.body.appendChild(overlay);
+                requestAnimationFrame(function() { overlay.classList.add('show'); });
+
+                function close(result) {
+                    overlay.classList.remove('show');
+                    setTimeout(function() { overlay.remove(); }, 200);
+                    resolve(result);
+                }
+
+                overlay.querySelector('#confirmOk').addEventListener('click', function() { close(true); });
+                overlay.querySelector('#confirmCancel').addEventListener('click', function() { close(false); });
+                overlay.addEventListener('click', function(e) { if (e.target === overlay) close(false); });
+                document.addEventListener('keydown', function handler(e) {
+                    if (e.key === 'Escape') { close(false); document.removeEventListener('keydown', handler); }
+                    if (e.key === 'Enter') { close(true); document.removeEventListener('keydown', handler); }
+                });
+            });
+        }
+
+        // Auto-bind forms and buttons with data-confirm attribute
+        document.addEventListener('DOMContentLoaded', function() {
+            document.addEventListener('click', function(e) {
+                var btn = e.target.closest('[data-confirm]');
+                if (!btn) return;
+                var form = btn.closest('form');
+                if (form && (btn.type === 'submit' || btn.tagName === 'BUTTON')) {
+                    e.preventDefault();
+                    rpmsConfirm(btn.getAttribute('data-confirm'), {
+                        title: btn.getAttribute('data-confirm-title') || 'Confirmar',
+                        type: btn.getAttribute('data-confirm-type') || 'warning'
+                    }).then(function(ok) {
+                        if (ok) form.submit();
+                    });
+                }
+            });
+
+            document.addEventListener('submit', function(e) {
+                var form = e.target;
+                var confirmMsg = form.getAttribute('data-confirm');
+                if (!confirmMsg) return;
+                if (form._confirmed) { form._confirmed = false; return; }
+                e.preventDefault();
+                rpmsConfirm(confirmMsg, {
+                    title: form.getAttribute('data-confirm-title') || 'Confirmar',
+                    type: form.getAttribute('data-confirm-type') || 'warning'
+                }).then(function(ok) {
+                    if (ok) { form._confirmed = true; form.submit(); }
+                });
+            });
+        });
     </script>
     {{-- Toast Container --}}
     <div class="toast-container" id="toastContainer"></div>

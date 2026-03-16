@@ -14,6 +14,8 @@ class DashboardController extends Controller
     public function index()
     {
         $today = Carbon::today();
+        $isViewer = auth()->user()->isViewer();
+        $userId = auth()->id();
 
         // Update resolved statuses for non-paid installments
         $allInstallments = Installment::where('status', '!=', 'pago')->with('booking')->get();
@@ -24,6 +26,87 @@ class DashboardController extends Controller
                 $installment->save();
             }
         }
+
+        // Helper: scope installment queries for viewer
+        $scopeInstallment = function ($query) use ($isViewer, $userId) {
+            if ($isViewer) {
+                $query->whereHas('booking', fn($q) => $q->where('created_by', $userId));
+            }
+            return $query;
+        };
+
+        // Helper: scope booking queries for viewer
+        $scopeBooking = function ($query) use ($isViewer, $userId) {
+            if ($isViewer) {
+                $query->where('created_by', $userId);
+            }
+            return $query;
+        };
+
+        // Viewer gets a simplified dashboard with only their data
+        if ($isViewer) {
+            // Booking stats (viewer's own)
+            $bookingStats = [
+                'total' => Booking::where('created_by', $userId)->count(),
+                'pendente' => Booking::where('created_by', $userId)->where('status', 'pendente')->count(),
+                'confirmado' => Booking::where('created_by', $userId)->where('status', 'confirmado')->count(),
+                'concluido' => Booking::where('created_by', $userId)->where('status', 'concluido')->count(),
+            ];
+
+            // Payment status (viewer's own installments)
+            $paymentStatusChart = [
+                'Pendente' => $scopeInstallment(Installment::where('status', 'pendente'))->count(),
+                'Pago' => $scopeInstallment(Installment::where('status', 'pago'))->count(),
+                'Atrasado' => $scopeInstallment(Installment::where('status', 'atrasado'))->count(),
+                'Falta Link' => $scopeInstallment(Installment::where('status', 'falta_link'))->count(),
+            ];
+
+            // Bookings per month (viewer's own)
+            $sixMonthsAgo = $today->copy()->subMonths(5)->startOfMonth();
+            $monthlyBookings = Booking::where('created_by', $userId)
+                ->where('created_at', '>=', $sixMonthsAgo)
+                ->selectRaw("DATE_FORMAT(created_at, '%Y-%m') as month, COUNT(*) as total")
+                ->groupBy('month')
+                ->orderBy('month')
+                ->get();
+
+            $bookingsLabels = [];
+            $bookingsData = [];
+            for ($i = 5; $i >= 0; $i--) {
+                $m = $today->copy()->subMonths($i);
+                $key = $m->format('Y-m');
+                $bookingsLabels[] = $m->translatedFormat('M/Y');
+                $found = $monthlyBookings->first(fn($r) => $r->month === $key);
+                $bookingsData[] = $found ? $found->total : 0;
+            }
+
+            // Tours by type (all tours are visible to viewers)
+            $toursByType = Tour::selectRaw("type, COUNT(*) as total")
+                ->groupBy('type')
+                ->pluck('total', 'type')
+                ->toArray();
+
+            $typeLabels = [
+                'grupo' => 'Grupo',
+                'privado' => 'Privado',
+                'agencia' => 'Agencia',
+                'influencer' => 'Influencer',
+            ];
+            $tourTypeChart = [];
+            foreach ($toursByType as $type => $count) {
+                $tourTypeChart[$typeLabels[$type] ?? ucfirst($type)] = $count;
+            }
+
+            return view('dashboard.viewer', compact(
+                'bookingStats',
+                'paymentStatusChart',
+                'bookingsLabels',
+                'bookingsData',
+                'tourTypeChart'
+            ));
+        }
+
+        // === ADMIN / MANAGER DASHBOARD ===
 
         // Status counts
         $statusCounts = [

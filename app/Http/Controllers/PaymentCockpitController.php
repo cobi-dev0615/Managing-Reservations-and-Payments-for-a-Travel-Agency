@@ -12,6 +12,11 @@ class PaymentCockpitController extends Controller
     {
         $query = Installment::with(['booking.client', 'booking.tour']);
 
+        // Viewers can only see installments from their own bookings
+        if (auth()->user()->isViewer()) {
+            $query->whereHas('booking', fn($q) => $q->where('created_by', auth()->id()));
+        }
+
         // Resolve statuses before filtering
         // We load all non-pago installments to update their resolved status
         $installmentsToResolve = Installment::where('status', '!=', 'pago')->get();
@@ -65,7 +70,11 @@ class PaymentCockpitController extends Controller
         $installments = $query->orderBy('due_date', 'asc')->paginate($perPage)->withQueryString();
 
         // Summary stats
-        $allInstallments = Installment::with('booking')->get();
+        $statsQuery = Installment::with('booking');
+        if (auth()->user()->isViewer()) {
+            $statsQuery->whereHas('booking', fn($q) => $q->where('created_by', auth()->id()));
+        }
+        $allInstallments = $statsQuery->get();
 
         $stats = [
             'counts' => [

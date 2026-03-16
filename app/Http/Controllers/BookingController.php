@@ -15,6 +15,11 @@ class BookingController extends Controller
     {
         $query = Booking::with(['client', 'tour']);
 
+        // Viewers can only see their own bookings
+        if (auth()->user()->isViewer()) {
+            $query->where('created_by', auth()->id());
+        }
+
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
@@ -72,6 +77,7 @@ class BookingController extends Controller
         }
 
         $validated['status'] = $validated['status'] ?? 'pendente';
+        $validated['created_by'] = auth()->id();
 
         $booking = Booking::create($validated);
 
@@ -108,6 +114,10 @@ class BookingController extends Controller
 
     public function show(Booking $booking)
     {
+        if (auth()->user()->isViewer() && $booking->created_by !== auth()->id()) {
+            abort(403, 'Acesso nao autorizado.');
+        }
+
         $booking->load(['installments' => function ($q) {
             $q->orderBy('installment_number');
         }, 'client', 'tour']);

@@ -11,6 +11,7 @@ class Booking extends Model
     protected $fillable = [
         'client_id', 'tour_id', 'tour_manual', 'start_date', 'currency',
         'total_value', 'discount_notes', 'num_travelers', 'status', 'notes',
+        'created_by',
     ];
 
     protected $casts = [
@@ -31,6 +32,11 @@ class Booking extends Model
     public function installments(): HasMany
     {
         return $this->hasMany(Installment::class);
+    }
+
+    public function creator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 
     public function getTourNameAttribute(): string

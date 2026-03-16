@@ -206,9 +206,9 @@
                         <td>
                             <div class="d-flex gap-1">
                                 @if($installment->status !== 'pago')
-                                    <form action="{{ route('installments.mark-paid', $installment) }}" method="POST" class="d-inline" onsubmit="return confirm('Marcar parcela como paga?')">
+                                    <form action="{{ route('installments.mark-paid', $installment) }}" method="POST" class="d-inline">
                                         @csrf
-                                        <button type="submit" class="btn btn-sm btn-outline-success btn-action" title="Marcar como Pago">
+                                        <button type="submit" class="btn btn-sm btn-outline-success btn-action" title="Marcar como Pago" data-confirm="Marcar parcela como paga?" data-confirm-title="Confirmar Pagamento">
                                             <i class="bi bi-check-lg"></i>
                                         </button>
                                     </form>
@@ -217,15 +217,15 @@
                                     <i class="bi bi-pencil"></i>
                                 </a>
                                 @if($installment->status !== 'pago')
-                                    <form action="{{ route('installments.resend-email', $installment) }}" method="POST" class="d-inline" onsubmit="return confirm('Reenviar e-mail para esta parcela?')">
+                                    <form action="{{ route('installments.resend-email', $installment) }}" method="POST" class="d-inline">
                                         @csrf
-                                        <button type="submit" class="btn btn-sm btn-outline-info btn-action" title="Reenviar E-mail">
+                                        <button type="submit" class="btn btn-sm btn-outline-info btn-action" title="Reenviar E-mail" data-confirm="Reenviar e-mail para esta parcela?" data-confirm-title="Reenviar E-mail">
                                             <i class="bi bi-envelope"></i>
                                         </button>
                                     </form>
-                                    <form action="{{ route('installments.toggle-email', $installment) }}" method="POST" class="d-inline" onsubmit="return confirm('{{ $installment->email_paused ? 'Reativar e-mails automaticos?' : 'Pausar e-mails automaticos?' }}')">
+                                    <form action="{{ route('installments.toggle-email', $installment) }}" method="POST" class="d-inline">
                                         @csrf
-                                        <button type="submit" class="btn btn-sm {{ $installment->email_paused ? 'btn-warning' : 'btn-outline-warning' }} btn-action" title="{{ $installment->email_paused ? 'Reativar E-mails' : 'Pausar E-mails' }}">
+                                        <button type="submit" class="btn btn-sm {{ $installment->email_paused ? 'btn-warning' : 'btn-outline-warning' }} btn-action" title="{{ $installment->email_paused ? 'Reativar E-mails' : 'Pausar E-mails' }}" data-confirm="{{ $installment->email_paused ? 'Reativar e-mails automaticos?' : 'Pausar e-mails automaticos?' }}" data-confirm-title="E-mails Automaticos">
                                             <i class="bi {{ $installment->email_paused ? 'bi-play-fill' : 'bi-pause-fill' }}"></i>
                                         </button>
                                     </form>
