@@ -14,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'role' => \App\Http\Middleware\CheckRole::class,
             'can.manage' => \App\Http\Middleware\CheckCanManage::class,
+            'approved' => \App\Http\Middleware\CheckApproved::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

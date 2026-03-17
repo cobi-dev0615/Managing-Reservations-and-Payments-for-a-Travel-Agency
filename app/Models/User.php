@@ -20,11 +20,22 @@ class User extends Authenticatable
         self::ROLE_VIEWER => 'Visualizador',
     ];
 
+    const STATUS_PENDING = 'pending';
+    const STATUS_APPROVED = 'approved';
+    const STATUS_SUSPENDED = 'suspended';
+
+    const STATUSES = [
+        self::STATUS_PENDING => 'Pendente',
+        self::STATUS_APPROVED => 'Aprovado',
+        self::STATUS_SUSPENDED => 'Suspenso',
+    ];
+
     protected $fillable = [
         'name',
         'email',
         'password',
         'role',
+        'status',
     ];
 
     protected $hidden = [
@@ -72,5 +83,25 @@ class User extends Authenticatable
     public function roleName(): string
     {
         return self::ROLES[$this->role] ?? $this->role;
+    }
+
+    public function statusName(): string
+    {
+        return self::STATUSES[$this->status] ?? $this->status;
+    }
+
+    public function isApproved(): bool
+    {
+        return $this->status === self::STATUS_APPROVED;
+    }
+
+    public function isPending(): bool
+    {
+        return $this->status === self::STATUS_PENDING;
+    }
+
+    public function isSuspended(): bool
+    {
+        return $this->status === self::STATUS_SUSPENDED;
     }
 }

@@ -12,6 +12,17 @@
     </a>
 </div>
 
+@php
+    $pendingCount = $users->where('status', 'pending')->count();
+@endphp
+
+@if($pendingCount > 0)
+<div class="alert alert-warning d-flex align-items-center mb-3" style="border-radius: 0.75rem; border: none; border-left: 4px solid #eab308; background: #fefce8; color: #854d0e; font-size: 0.88rem;">
+    <i class="bi bi-clock-history me-2" style="font-size: 1.1rem;"></i>
+    <span><strong>{{ $pendingCount }}</strong> usuario(s) aguardando aprovacao.</span>
+</div>
+@endif
+
 <div class="card">
     <div class="table-responsive">
         <table class="table table-hover mb-0">
@@ -19,7 +30,8 @@
                 <tr>
                     <th>Nome</th>
                     <th>E-mail</th>
-                    <th>Papel</th>
+                    <th>Funcao</th>
+                    <th>Status</th>
                     <th>Criado em</th>
                     <th>Acoes</th>
                 </tr>
@@ -51,9 +63,59 @@
                                 {{ $user->roleName() }}
                             </span>
                         </td>
+                        <td>
+                            @php
+                                $statusColors = [
+                                    'approved' => 'background: #dcfce7; color: #166534;',
+                                    'pending' => 'background: #fef3c7; color: #92400e;',
+                                    'suspended' => 'background: #fee2e2; color: #991b1b;',
+                                ];
+                                $statusIcons = [
+                                    'approved' => 'bi-check-circle-fill',
+                                    'pending' => 'bi-clock-fill',
+                                    'suspended' => 'bi-x-circle-fill',
+                                ];
+                            @endphp
+                            <span class="status-badge" style="{{ $statusColors[$user->status] ?? '' }}">
+                                <i class="bi {{ $statusIcons[$user->status] ?? '' }} me-1" style="font-size: 0.65rem;"></i>
+                                {{ $user->statusName() }}
+                            </span>
+                        </td>
                         <td class="timestamp-muted">{{ $user->created_at->format('d/m/Y') }}</td>
                         <td>
                             <div class="d-flex gap-1">
+                                {{-- Approve button for pending users --}}
+                                @if($user->status === 'pending' && $user->id !== auth()->id())
+                                    <form method="POST" action="{{ route('users.approve', $user) }}" class="d-inline">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" class="btn btn-sm btn-outline-success btn-action" title="Aprovar">
+                                            <i class="bi bi-check-lg"></i>
+                                        </button>
+                                    </form>
+                                @endif
+
+                                {{-- Suspend/Reactivate button --}}
+                                @if($user->id !== auth()->id() && !$user->isAdmin())
+                                    @if($user->status === 'approved')
+                                        <form method="POST" action="{{ route('users.suspend', $user) }}" class="d-inline">
+                                            @csrf
+                                            @method('PATCH')
+                                            <button type="submit" class="btn btn-sm btn-outline-warning btn-action" title="Suspender" onclick="return confirm('Tem certeza que deseja suspender o usuario {{ $user->name }}?')">
+                                                <i class="bi bi-pause-circle"></i>
+                                            </button>
+                                        </form>
+                                    @elseif($user->status === 'suspended')
+                                        <form method="POST" action="{{ route('users.approve', $user) }}" class="d-inline">
+                                            @csrf
+                                            @method('PATCH')
+                                            <button type="submit" class="btn btn-sm btn-outline-success btn-action" title="Reativar">
+                                                <i class="bi bi-play-circle"></i>
+                                            </button>
+                                        </form>
+                                    @endif
+                                @endif
+
                                 <a href="{{ route('users.edit', $user) }}" class="btn btn-sm btn-outline-secondary btn-action" title="Editar">
                                     <i class="bi bi-pencil"></i>
                                 </a>
@@ -67,7 +129,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5">
+                        <td colspan="6">
                             <div class="empty-state">
                                 <i class="bi bi-people"></i>
                                 <p>Nenhum usuario encontrado.</p>

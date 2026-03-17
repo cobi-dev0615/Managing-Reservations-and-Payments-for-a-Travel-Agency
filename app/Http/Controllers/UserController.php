@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\Rule;
@@ -30,6 +31,9 @@ class UserController extends Controller
             'role' => ['required', Rule::in(array_keys(User::ROLES))],
         ]);
 
+        // Users created by admin are auto-approved
+        $validated['status'] = User::STATUS_APPROVED;
+
         User::create($validated);
 
         return redirect()->route('users.index')->with('success', 'Usuario criado com sucesso.');
@@ -48,11 +52,13 @@ class UserController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'password' => ['nullable', 'confirmed', Password::min(8)],
             'role' => ['required', Rule::in(array_keys(User::ROLES))],
+            'status' => ['required', Rule::in(array_keys(User::STATUSES))],
         ]);
 
         $user->name = $validated['name'];
         $user->email = $validated['email'];
         $user->role = $validated['role'];
+        $user->status = $validated['status'];
 
         if (!empty($validated['password'])) {
             $user->password = $validated['password'];
@@ -76,5 +82,31 @@ class UserController extends Controller
         $user->delete();
 
         return redirect()->route('users.index')->with('success', 'Usuario excluido com sucesso.');
+    }
+
+    public function approve(User $user)
+    {
+        $user->update(['status' => User::STATUS_APPROVED]);
+
+        ActivityLog::log('aprovou', 'User', $user->id, ['name' => $user->name]);
+
+        return back()->with('success', "Usuario {$user->name} aprovado com sucesso.");
+    }
+
+    public function suspend(User $user)
+    {
+        if ($user->id === auth()->id()) {
+            return back()->with('error', 'Voce nao pode suspender sua propria conta.');
+        }
+
+        if ($user->isAdmin()) {
+            return back()->with('error', 'Nao e possivel suspender um administrador.');
+        }
+
+        $user->update(['status' => User::STATUS_SUSPENDED]);
+
+        ActivityLog::log('suspendeu', 'User', $user->id, ['name' => $user->name]);
+
+        return back()->with('success', "Usuario {$user->name} suspenso com sucesso.");
     }
 }

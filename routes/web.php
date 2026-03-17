@@ -25,7 +25,7 @@ Route::middleware('guest')->group(function () {
 Route::post('logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
 // All authenticated routes
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'approved'])->group(function () {
     // Dashboard
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -102,5 +102,7 @@ Route::middleware('auth')->group(function () {
     // User Management (admin only)
     Route::middleware('role:admin')->group(function () {
         Route::resource('users', UserController::class)->except(['show']);
+        Route::patch('users/{user}/approve', [UserController::class, 'approve'])->name('users.approve');
+        Route::patch('users/{user}/suspend', [UserController::class, 'suspend'])->name('users.suspend');
     });
 });

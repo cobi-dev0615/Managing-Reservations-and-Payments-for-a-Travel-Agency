@@ -43,13 +43,13 @@
             font-weight: 600;
             color: #374151;
         }
-        .form-control {
+        .form-control, .form-select {
             border-radius: 0.5rem;
             padding: 0.6rem 0.75rem;
             font-size: 0.88rem;
             border-color: #d1d5db;
         }
-        .form-control:focus {
+        .form-control:focus, .form-select:focus {
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
         }
@@ -83,7 +83,7 @@
         .auth-footer a:hover {
             color: var(--primary-dark);
         }
-        .alert {
+        .alert-danger {
             border-radius: 0.5rem;
             font-size: 0.84rem;
             border: none;
@@ -91,10 +91,31 @@
             color: #991b1b;
             border-left: 4px solid #ef4444;
         }
+        .alert-warning {
+            border-radius: 0.5rem;
+            font-size: 0.84rem;
+            border: none;
+            background: #fefce8;
+            color: #854d0e;
+            border-left: 4px solid #eab308;
+        }
+        .alert-info {
+            border-radius: 0.5rem;
+            font-size: 0.84rem;
+            border: none;
+            background: #eff6ff;
+            color: #1e40af;
+            border-left: 4px solid #3b82f6;
+        }
         .input-group-text {
             background: #f9fafb;
             border-color: #d1d5db;
             color: #9ca3af;
+        }
+        .role-description {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.25rem;
         }
     </style>
 </head>
@@ -106,7 +127,7 @@
             </div>
 
             @if($errors->any())
-                <div class="alert mb-3 py-2">
+                <div class="alert alert-danger mb-3 py-2">
                     @foreach($errors->all() as $error)
                         <div><i class="bi bi-exclamation-circle me-1"></i> {{ $error }}</div>
                     @endforeach
@@ -133,6 +154,22 @@
                 </div>
 
                 <div class="mb-3">
+                    <label for="role" class="form-label">Funcao</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-shield-check"></i></span>
+                        <select name="role" id="role" class="form-select" required>
+                            @foreach($roles as $value => $label)
+                                <option value="{{ $value }}" {{ old('role') === $value ? 'selected' : '' }}>{{ $label }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="role-description">
+                        <i class="bi bi-info-circle me-1"></i>
+                        <span id="roleDesc">Selecione a funcao desejada</span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
                     <label for="password" class="form-label">Senha</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-lock"></i></span>
@@ -148,6 +185,10 @@
                     </div>
                 </div>
 
+                <div class="alert alert-warning mb-3 py-2">
+                    <i class="bi bi-clock me-1"></i> Apos o registro, sua conta precisara ser aprovada pelo administrador.
+                </div>
+
                 <button type="submit" class="btn btn-primary w-100">
                     <i class="bi bi-person-plus me-1"></i> Criar Conta
                 </button>
@@ -158,5 +199,22 @@
             </div>
         </div>
     </div>
+
+    <script>
+        const roleDescriptions = {
+            'manager': 'Gerente: Pode gerenciar tours, clientes, reservas e pagamentos.',
+            'viewer': 'Visualizador: Acesso somente leitura aos seus proprios dados.'
+        };
+
+        const roleSelect = document.getElementById('role');
+        const roleDesc = document.getElementById('roleDesc');
+
+        function updateRoleDesc() {
+            roleDesc.textContent = roleDescriptions[roleSelect.value] || 'Selecione a funcao desejada';
+        }
+
+        roleSelect.addEventListener('change', updateRoleDesc);
+        updateRoleDesc();
+    </script>
 </body>
 </html>

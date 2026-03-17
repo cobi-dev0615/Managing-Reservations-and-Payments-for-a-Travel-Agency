@@ -43,6 +43,18 @@
                         @enderror
                     </div>
 
+                    <div class="mb-3">
+                        <label for="status" class="form-label">Status <span class="text-danger">*</span></label>
+                        <select name="status" id="status" class="form-select @error('status') is-invalid @enderror">
+                            @foreach(\App\Models\User::STATUSES as $key => $label)
+                                <option value="{{ $key }}" {{ old('status', $user->status) == $key ? 'selected' : '' }}>{{ $label }}</option>
+                            @endforeach
+                        </select>
+                        @error('status')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
                     <div class="section-heading">Alterar Senha (opcional)</div>
 
                     <div class="mb-3">
