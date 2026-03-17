@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
-@section('title', 'Cockpit de Pagamentos')
-@section('page-title', 'Cockpit de Pagamentos')
-@section('page-subtitle', 'Visao geral de todas as parcelas e pagamentos')
+@section('title', __('messages.payment_cockpit'))
+@section('page-title', __('messages.payment_cockpit'))
+@section('page-subtitle', __('messages.payment_cockpit_subtitle'))
 
 @section('content')
 
@@ -16,7 +16,7 @@
                         <i class="bi bi-hourglass-split"></i>
                     </div>
                     <div>
-                        <div class="stat-card-label">Pendente</div>
+                        <div class="stat-card-label">{{ __('messages.status_pending') }}</div>
                         <div class="stat-card-value text-warning" style="font-size: 1.5rem;">{{ $stats['counts']['pendente'] }}</div>
                     </div>
                 </div>
@@ -31,7 +31,7 @@
                         <i class="bi bi-check-circle-fill"></i>
                     </div>
                     <div>
-                        <div class="stat-card-label">Pago</div>
+                        <div class="stat-card-label">{{ __('messages.paid') }}</div>
                         <div class="stat-card-value text-success" style="font-size: 1.5rem;">{{ $stats['counts']['pago'] }}</div>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
                         <i class="bi bi-exclamation-triangle-fill"></i>
                     </div>
                     <div>
-                        <div class="stat-card-label">Atrasado</div>
+                        <div class="stat-card-label">{{ __('messages.overdue') }}</div>
                         <div class="stat-card-value text-danger" style="font-size: 1.5rem;">{{ $stats['counts']['atrasado'] }}</div>
                     </div>
                 </div>
@@ -61,7 +61,7 @@
                         <i class="bi bi-link-45deg"></i>
                     </div>
                     <div>
-                        <div class="stat-card-label">Falta Link</div>
+                        <div class="stat-card-label">{{ __('messages.missing_link') }}</div>
                         <div class="stat-card-value" style="font-size: 1.5rem; color: #4f46e5;">{{ $stats['counts']['falta_link'] }}</div>
                     </div>
                 </div>
@@ -77,7 +77,7 @@
                     <span class="currency-badge currency-{{ $currency }}" style="font-size: 0.85rem; padding: 0.4rem 0.75rem;">{{ $currency }}</span>
                     <div>
                         <div class="fw-bold" style="font-size: 1.1rem; letter-spacing: -0.02em;">{{ number_format($total, 2, ',', '.') }}</div>
-                        <div class="text-muted" style="font-size: 0.72rem; text-transform: uppercase; font-weight: 600; letter-spacing: 0.03em;">Pendente</div>
+                        <div class="text-muted" style="font-size: 0.72rem; text-transform: uppercase; font-weight: 600; letter-spacing: 0.03em;">{{ __('messages.pending_currency') }}</div>
                     </div>
                 </div>
             </div>
@@ -89,51 +89,51 @@
 <div class="filter-bar">
     <form method="GET" action="{{ route('payments.index') }}" class="row g-3 align-items-end">
         <div class="col-md-2">
-            <label for="status" class="form-label">Status</label>
+            <label for="status" class="form-label">{{ __('messages.status') }}</label>
             <select name="status" id="status" class="form-select">
-                <option value="">Todos</option>
-                <option value="pendente" {{ ($filters['status'] ?? '') == 'pendente' ? 'selected' : '' }}>Pendente</option>
-                <option value="pago" {{ ($filters['status'] ?? '') == 'pago' ? 'selected' : '' }}>Pago</option>
-                <option value="atrasado" {{ ($filters['status'] ?? '') == 'atrasado' ? 'selected' : '' }}>Atrasado</option>
-                <option value="falta_link" {{ ($filters['status'] ?? '') == 'falta_link' ? 'selected' : '' }}>Falta Link</option>
+                <option value="">{{ __('messages.all') }}</option>
+                <option value="pendente" {{ ($filters['status'] ?? '') == 'pendente' ? 'selected' : '' }}>{{ __('messages.status_pending') }}</option>
+                <option value="pago" {{ ($filters['status'] ?? '') == 'pago' ? 'selected' : '' }}>{{ __('messages.paid') }}</option>
+                <option value="atrasado" {{ ($filters['status'] ?? '') == 'atrasado' ? 'selected' : '' }}>{{ __('messages.overdue') }}</option>
+                <option value="falta_link" {{ ($filters['status'] ?? '') == 'falta_link' ? 'selected' : '' }}>{{ __('messages.missing_link') }}</option>
             </select>
         </div>
         <div class="col-md-2">
-            <label for="payment_method" class="form-label">Metodo</label>
+            <label for="payment_method" class="form-label">{{ __('messages.method') }}</label>
             <select name="payment_method" id="payment_method" class="form-select">
-                <option value="">Todos</option>
+                <option value="">{{ __('messages.all') }}</option>
                 <option value="link" {{ ($filters['payment_method'] ?? '') == 'link' ? 'selected' : '' }}>Link</option>
                 <option value="pix" {{ ($filters['payment_method'] ?? '') == 'pix' ? 'selected' : '' }}>PIX</option>
                 <option value="wise" {{ ($filters['payment_method'] ?? '') == 'wise' ? 'selected' : '' }}>Wise</option>
             </select>
         </div>
         <div class="col-md-2">
-            <label for="tour_id" class="form-label">Tour</label>
+            <label for="tour_id" class="form-label">{{ __('messages.tour') }}</label>
             <select name="tour_id" id="tour_id" class="form-select">
-                <option value="">Todos</option>
+                <option value="">{{ __('messages.all') }}</option>
                 @foreach($tours as $tour)
                     <option value="{{ $tour->id }}" {{ ($filters['tour_id'] ?? '') == $tour->id ? 'selected' : '' }}>{{ $tour->name }}</option>
                 @endforeach
             </select>
         </div>
         <div class="col-md-2">
-            <label for="date_from" class="form-label">De</label>
+            <label for="date_from" class="form-label">{{ __('messages.from') }}</label>
             <input type="date" name="date_from" id="date_from" class="form-control" value="{{ $filters['date_from'] ?? '' }}">
         </div>
         <div class="col-md-2">
-            <label for="date_to" class="form-label">Ate</label>
+            <label for="date_to" class="form-label">{{ __('messages.until') }}</label>
             <input type="date" name="date_to" id="date_to" class="form-control" value="{{ $filters['date_to'] ?? '' }}">
         </div>
         <div class="col-md-2">
-            <label for="search" class="form-label">Buscar</label>
-            <input type="text" name="search" id="search" class="form-control" placeholder="Cliente ou tour..." value="{{ $filters['search'] ?? '' }}">
+            <label for="search" class="form-label">{{ __('messages.search') }}</label>
+            <input type="text" name="search" id="search" class="form-control" placeholder="{{ __('messages.client_or_tour') }}" value="{{ $filters['search'] ?? '' }}">
         </div>
         <div class="col-md-12 d-flex gap-2 align-items-end">
             <button type="submit" class="btn btn-secondary">
-                <i class="bi bi-search"></i> Filtrar
+                <i class="bi bi-search"></i> {{ __('messages.filter') }}
             </button>
             <a href="{{ route('payments.index') }}" class="btn btn-outline-secondary">
-                <i class="bi bi-x-lg"></i> Limpar
+                <i class="bi bi-x-lg"></i> {{ __('messages.clear') }}
             </a>
         </div>
     </form>
@@ -145,17 +145,17 @@
         <table class="table table-hover mb-0">
             <thead>
                 <tr>
-                    <th>Status</th>
-                    <th>Vencimento</th>
-                    <th>Cliente</th>
-                    <th>Tour</th>
-                    <th>Parcela</th>
-                    <th>Valor</th>
-                    <th>Moeda</th>
-                    <th>Metodo</th>
-                    <th>Link</th>
-                    <th>Ultimo E-mail</th>
-                    <th>Acoes</th>
+                    <th>{{ __('messages.status') }}</th>
+                    <th>{{ __('messages.due_date') }}</th>
+                    <th>{{ __('messages.client') }}</th>
+                    <th>{{ __('messages.tour') }}</th>
+                    <th>{{ __('messages.installment') }}</th>
+                    <th>{{ __('messages.value') }}</th>
+                    <th>{{ __('messages.currency') }}</th>
+                    <th>{{ __('messages.method') }}</th>
+                    <th>{{ __('messages.link') }}</th>
+                    <th>{{ __('messages.last_email') }}</th>
+                    <th>{{ __('messages.actions') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -169,7 +169,7 @@
                     <tr class="{{ $rowClass }}">
                         <td>
                             <span class="status-badge status-{{ $installment->status }}">
-                                {{ $installment->status === 'falta_link' ? 'Falta Link' : ucfirst($installment->status) }}
+                                {{ $installment->status === 'falta_link' ? __('messages.missing_link') : ucfirst($installment->status) }}
                             </span>
                         </td>
                         <td>{{ $installment->due_date ? $installment->due_date->format('d/m/Y') : '-' }}</td>
@@ -185,7 +185,7 @@
                         <td><span class="count-badge">{{ strtoupper($installment->payment_method) }}</span></td>
                         <td>
                             @if($installment->payment_link)
-                                <a href="{{ $installment->payment_link }}" target="_blank" class="btn btn-sm btn-outline-primary btn-action" title="Abrir link">
+                                <a href="{{ $installment->payment_link }}" target="_blank" class="btn btn-sm btn-outline-primary btn-action" title="{{ __('messages.open_link') }}">
                                     <i class="bi bi-link-45deg"></i>
                                 </a>
                             @elseif($installment->payment_method === 'link')
@@ -208,24 +208,24 @@
                                 @if($installment->status !== 'pago')
                                     <form action="{{ route('installments.mark-paid', $installment) }}" method="POST" class="d-inline">
                                         @csrf
-                                        <button type="submit" class="btn btn-sm btn-outline-success btn-action" title="Marcar como Pago" data-confirm="Marcar parcela como paga?" data-confirm-title="Confirmar Pagamento">
+                                        <button type="submit" class="btn btn-sm btn-outline-success btn-action" title="{{ __('messages.mark_as_paid') }}" data-confirm="{{ __('messages.confirm_mark_paid') }}" data-confirm-title="{{ __('messages.confirm_payment') }}">
                                             <i class="bi bi-check-lg"></i>
                                         </button>
                                     </form>
                                 @endif
-                                <a href="{{ route('bookings.show', $installment->booking_id) }}#parcelas" class="btn btn-sm btn-outline-secondary btn-action" title="Editar">
+                                <a href="{{ route('bookings.show', $installment->booking_id) }}#parcelas" class="btn btn-sm btn-outline-secondary btn-action" title="{{ __('messages.edit') }}">
                                     <i class="bi bi-pencil"></i>
                                 </a>
                                 @if($installment->status !== 'pago')
                                     <form action="{{ route('installments.resend-email', $installment) }}" method="POST" class="d-inline">
                                         @csrf
-                                        <button type="submit" class="btn btn-sm btn-outline-info btn-action" title="Reenviar E-mail" data-confirm="Reenviar e-mail para esta parcela?" data-confirm-title="Reenviar E-mail">
+                                        <button type="submit" class="btn btn-sm btn-outline-info btn-action" title="{{ __('messages.resend_email') }}" data-confirm="{{ __('messages.confirm_resend_email') }}" data-confirm-title="{{ __('messages.resend_email') }}">
                                             <i class="bi bi-envelope"></i>
                                         </button>
                                     </form>
                                     <form action="{{ route('installments.toggle-email', $installment) }}" method="POST" class="d-inline">
                                         @csrf
-                                        <button type="submit" class="btn btn-sm {{ $installment->email_paused ? 'btn-warning' : 'btn-outline-warning' }} btn-action" title="{{ $installment->email_paused ? 'Reativar E-mails' : 'Pausar E-mails' }}" data-confirm="{{ $installment->email_paused ? 'Reativar e-mails automaticos?' : 'Pausar e-mails automaticos?' }}" data-confirm-title="E-mails Automaticos">
+                                        <button type="submit" class="btn btn-sm {{ $installment->email_paused ? 'btn-warning' : 'btn-outline-warning' }} btn-action" title="{{ $installment->email_paused ? __('messages.reactivate_emails') : __('messages.pause_emails') }}" data-confirm="{{ $installment->email_paused ? __('messages.reactivate_emails_confirm') : __('messages.pause_emails_confirm') }}" data-confirm-title="{{ __('messages.auto_emails') }}">
                                             <i class="bi {{ $installment->email_paused ? 'bi-play-fill' : 'bi-pause-fill' }}"></i>
                                         </button>
                                     </form>
@@ -238,7 +238,7 @@
                         <td colspan="11">
                             <div class="empty-state">
                                 <i class="bi bi-credit-card"></i>
-                                <p>Nenhuma parcela encontrada.</p>
+                                <p>{{ __('messages.no_installments_found') }}</p>
                             </div>
                         </td>
                     </tr>
@@ -252,13 +252,13 @@
 <div class="rpms-pagination">
     <div class="d-flex align-items-center gap-3 flex-wrap">
         <div class="rpms-pagination-info">
-            Mostrando
+            {{ __('messages.showing') }}
             <strong>{{ $installments->firstItem() ?? 0 }}</strong>
-            a
+            {{ __('messages.to') }}
             <strong>{{ $installments->lastItem() ?? 0 }}</strong>
-            de
+            {{ __('messages.of') }}
             <strong>{{ $installments->total() }}</strong>
-            parcela(s)
+            {{ __('messages.installments_count') }}
         </div>
         <form method="GET" action="{{ route('payments.index') }}" class="d-flex align-items-center gap-2">
             @foreach(request()->except(['per_page', 'page']) as $key => $value)

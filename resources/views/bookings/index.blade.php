@@ -1,15 +1,15 @@
 @extends('layouts.app')
 
-@section('title', 'Reservas')
-@section('page-title', 'Reservas')
-@section('page-subtitle', 'Gerencie todas as reservas de viagem')
+@section('title', __('messages.bookings'))
+@section('page-title', __('messages.bookings'))
+@section('page-subtitle', __('messages.manage_bookings_subtitle'))
 
 @section('content')
 <div class="page-header">
     <div></div>
     @if(auth()->user()->canManage())
     <a href="{{ route('bookings.create') }}" class="btn btn-primary">
-        <i class="bi bi-plus-lg"></i> Nova Reserva
+        <i class="bi bi-plus-lg"></i> {{ __('messages.new_booking') }}
     </a>
     @endif
 </div>
@@ -18,30 +18,30 @@
 <div class="filter-bar">
     <form method="GET" action="{{ route('bookings.index') }}" class="row g-3 align-items-end">
         <div class="col-md-3">
-            <label for="status" class="form-label">Status</label>
+            <label for="status" class="form-label">{{ __('messages.status') }}</label>
             <select name="status" id="status" class="form-select">
-                <option value="">Todos</option>
-                <option value="pendente" {{ request('status') == 'pendente' ? 'selected' : '' }}>Pendente</option>
-                <option value="confirmado" {{ request('status') == 'confirmado' ? 'selected' : '' }}>Confirmado</option>
-                <option value="cancelado" {{ request('status') == 'cancelado' ? 'selected' : '' }}>Cancelado</option>
-                <option value="concluido" {{ request('status') == 'concluido' ? 'selected' : '' }}>Concluido</option>
+                <option value="">{{ __('messages.all') }}</option>
+                <option value="pendente" {{ request('status') == 'pendente' ? 'selected' : '' }}>{{ __('messages.status_pending') }}</option>
+                <option value="confirmado" {{ request('status') == 'confirmado' ? 'selected' : '' }}>{{ __('messages.status_confirmed') }}</option>
+                <option value="cancelado" {{ request('status') == 'cancelado' ? 'selected' : '' }}>{{ __('messages.status_cancelled') }}</option>
+                <option value="concluido" {{ request('status') == 'concluido' ? 'selected' : '' }}>{{ __('messages.status_completed') }}</option>
             </select>
         </div>
         <div class="col-md-3">
-            <label for="tour_id" class="form-label">Tour</label>
+            <label for="tour_id" class="form-label">{{ __('messages.tour') }}</label>
             <select name="tour_id" id="tour_id" class="form-select">
-                <option value="">Todos</option>
+                <option value="">{{ __('messages.all') }}</option>
                 @foreach($tours as $tour)
                     <option value="{{ $tour->id }}" {{ request('tour_id') == $tour->id ? 'selected' : '' }}>{{ $tour->name }}</option>
                 @endforeach
             </select>
         </div>
         <div class="col-md-3">
-            <label for="search" class="form-label">Buscar</label>
-            <input type="text" name="search" id="search" class="form-control" placeholder="Cliente ou tour..." value="{{ request('search') }}">
+            <label for="search" class="form-label">{{ __('messages.search') }}</label>
+            <input type="text" name="search" id="search" class="form-control" placeholder="{{ __('messages.client_or_tour') }}" value="{{ request('search') }}">
         </div>
         <div class="col-md-2">
-            <label for="per_page" class="form-label">Exibir</label>
+            <label for="per_page" class="form-label">{{ __('messages.display') }}</label>
             <select name="per_page" id="per_page" class="form-select">
                 @foreach([10, 25, 50, 100] as $size)
                     <option value="{{ $size }}" {{ request('per_page', 10) == $size ? 'selected' : '' }}>{{ $size }}</option>
@@ -65,14 +65,14 @@
         <table class="table table-hover mb-0">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Cliente</th>
-                    <th>Tour</th>
-                    <th>Data Inicio</th>
-                    <th>Viajantes</th>
-                    <th>Valor Total</th>
-                    <th>Status</th>
-                    <th>Acoes</th>
+                    <th>{{ __('messages.id') }}</th>
+                    <th>{{ __('messages.client') }}</th>
+                    <th>{{ __('messages.tour') }}</th>
+                    <th>{{ __('messages.start_date') }}</th>
+                    <th>{{ __('messages.travelers') }}</th>
+                    <th>{{ __('messages.total_value') }}</th>
+                    <th>{{ __('messages.status') }}</th>
+                    <th>{{ __('messages.actions') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -92,14 +92,14 @@
                         </td>
                         <td>
                             <div class="d-flex gap-1">
-                                <a href="{{ route('bookings.show', $booking) }}" class="btn btn-sm btn-outline-primary btn-action" title="Ver">
+                                <a href="{{ route('bookings.show', $booking) }}" class="btn btn-sm btn-outline-primary btn-action" title="{{ __('messages.view') }}">
                                     <i class="bi bi-eye"></i>
                                 </a>
                                 @if(auth()->user()->canManage())
-                                <a href="{{ route('bookings.edit', $booking) }}" class="btn btn-sm btn-outline-secondary btn-action" title="Editar">
+                                <a href="{{ route('bookings.edit', $booking) }}" class="btn btn-sm btn-outline-secondary btn-action" title="{{ __('messages.edit') }}">
                                     <i class="bi bi-pencil"></i>
                                 </a>
-                                <button type="button" class="btn btn-sm btn-outline-danger btn-action" title="Excluir" onclick="confirmDelete('{{ route('bookings.destroy', $booking) }}', 'Tem certeza que deseja excluir esta reserva?')">
+                                <button type="button" class="btn btn-sm btn-outline-danger btn-action" title="{{ __('messages.delete') }}" onclick="confirmDelete('{{ route('bookings.destroy', $booking) }}', '{{ __('messages.confirm_delete_booking') }}')">
                                     <i class="bi bi-trash3"></i>
                                 </button>
                                 @endif
@@ -111,7 +111,7 @@
                         <td colspan="8">
                             <div class="empty-state">
                                 <i class="bi bi-journal-bookmark"></i>
-                                <p>Nenhuma reserva encontrada.</p>
+                                <p>{{ __('messages.no_bookings_found') }}</p>
                             </div>
                         </td>
                     </tr>
@@ -124,13 +124,13 @@
 {{-- Results count & pagination --}}
 <div class="rpms-pagination">
     <div class="rpms-pagination-info">
-        Mostrando
+        {{ __('messages.showing') }}
         <strong>{{ $bookings->firstItem() ?? 0 }}</strong>
-        a
+        {{ __('messages.to') }}
         <strong>{{ $bookings->lastItem() ?? 0 }}</strong>
-        de
+        {{ __('messages.of') }}
         <strong>{{ $bookings->total() }}</strong>
-        reserva(s)
+        {{ __('messages.bookings_count') }}
     </div>
     @if($bookings->hasPages())
         <nav>

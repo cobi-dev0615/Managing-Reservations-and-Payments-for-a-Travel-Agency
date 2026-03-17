@@ -52,11 +52,11 @@ class SettingController extends Controller
         Setting::set('smtp_from_name', $request->input('smtp_from_name'), 'smtp');
         Setting::set('smtp_from_email', $request->input('smtp_from_email'), 'smtp');
 
-        ActivityLog::log('atualizou configurações', 'Setting', null, [
+        ActivityLog::log(__('messages.log_updated_settings'), 'Setting', null, [
             'groups' => ['payment_messages', 'pix', 'automation', 'smtp'],
         ]);
 
-        return redirect()->route('settings.index')->with('success', 'Configurações salvas com sucesso.');
+        return redirect()->route('settings.index')->with('success', __('messages.settings_saved'));
     }
 
     public function testEmail(Request $request)
@@ -68,7 +68,7 @@ class SettingController extends Controller
         // Ensure SMTP settings from database are applied
         $smtpHost = Setting::get('smtp_host');
         if (!$smtpHost) {
-            return redirect()->back()->with('error', 'Configure as credenciais SMTP antes de enviar o e-mail de teste.');
+            return redirect()->back()->with('error', __('messages.smtp_not_configured'));
         }
 
         Config::set('mail.default', 'smtp');
@@ -85,13 +85,13 @@ class SettingController extends Controller
 
         try {
             Mail::to($request->test_email)->send(new PaymentNotification(
-                'RPMS - E-mail de Teste',
-                'Este e um e-mail de teste do sistema RPMS (MOJO Safaris & Tours).<br><br>Se voce recebeu este e-mail, a configuracao SMTP esta funcionando corretamente.<br><br>Data/Hora: ' . now()->format('d/m/Y H:i:s')
+                __('messages.test_email_subject'),
+                __('messages.test_email_body', ['datetime' => now()->format('d/m/Y H:i:s')])
             ));
 
-            return redirect()->back()->with('success', 'E-mail de teste enviado com sucesso para ' . $request->test_email);
+            return redirect()->back()->with('success', __('messages.test_email_sent', ['email' => $request->test_email]));
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Falha ao enviar e-mail de teste: ' . $e->getMessage());
+            return redirect()->back()->with('error', __('messages.test_email_failed', ['error' => $e->getMessage()]));
         }
     }
 }

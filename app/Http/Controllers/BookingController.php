@@ -104,18 +104,18 @@ class BookingController extends Controller
             }
         }
 
-        ActivityLog::log('criou', 'Booking', $booking->id, [
+        ActivityLog::log(__('messages.log_created'), 'Booking', $booking->id, [
             'client' => $booking->client->name ?? '',
             'tour'   => $booking->tour_name,
         ]);
 
-        return redirect()->route('bookings.show', $booking)->with('success', 'Reserva criada com sucesso.');
+        return redirect()->route('bookings.show', $booking)->with('success', __('messages.booking_created'));
     }
 
     public function show(Booking $booking)
     {
         if (auth()->user()->isViewer() && $booking->created_by !== auth()->id()) {
-            abort(403, 'Acesso nao autorizado.');
+            abort(403, __('messages.unauthorized'));
         }
 
         $booking->load(['installments' => function ($q) {
@@ -154,12 +154,12 @@ class BookingController extends Controller
 
         $booking->update($validated);
 
-        ActivityLog::log('atualizou', 'Booking', $booking->id, [
+        ActivityLog::log(__('messages.log_updated'), 'Booking', $booking->id, [
             'client' => $booking->client->name ?? '',
             'tour'   => $booking->tour_name,
         ]);
 
-        return redirect()->route('bookings.show', $booking)->with('success', 'Reserva atualizada com sucesso.');
+        return redirect()->route('bookings.show', $booking)->with('success', __('messages.booking_updated'));
     }
 
     public function destroy(Booking $booking)
@@ -171,8 +171,8 @@ class BookingController extends Controller
 
         $booking->delete();
 
-        ActivityLog::log('excluiu', 'Booking', null, $details);
+        ActivityLog::log(__('messages.log_deleted'), 'Booking', null, $details);
 
-        return redirect()->route('bookings.index')->with('success', 'Reserva excluída com sucesso.');
+        return redirect()->route('bookings.index')->with('success', __('messages.booking_deleted'));
     }
 }

@@ -4,14 +4,17 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Symfony\Component\HttpFoundation\Response;
 
-class CheckCanManage
+class SetLocale
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if (!$request->user() || !$request->user()->canManage()) {
-            abort(403, __('messages.restricted_admin_manager'));
+        $locale = session('locale', config('app.locale'));
+
+        if (in_array($locale, ['en', 'pt'])) {
+            App::setLocale($locale);
         }
 
         return $next($request);

@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Usuarios')
-@section('page-title', 'Gerenciar Usuarios')
-@section('page-subtitle', 'Controle de acesso e permissoes do sistema')
+@section('title', __('messages.users'))
+@section('page-title', __('messages.manage_users'))
+@section('page-subtitle', __('messages.users_subtitle'))
 
 @section('content')
 <div class="page-header">
     <div></div>
     <a href="{{ route('users.create') }}" class="btn btn-primary">
-        <i class="bi bi-plus-lg"></i> Novo Usuario
+        <i class="bi bi-plus-lg"></i> {{ __('messages.new_user') }}
     </a>
 </div>
 
@@ -19,7 +19,7 @@
 @if($pendingCount > 0)
 <div class="alert alert-warning d-flex align-items-center mb-3" style="border-radius: 0.75rem; border: none; border-left: 4px solid #eab308; background: #fefce8; color: #854d0e; font-size: 0.88rem;">
     <i class="bi bi-clock-history me-2" style="font-size: 1.1rem;"></i>
-    <span><strong>{{ $pendingCount }}</strong> usuario(s) aguardando aprovacao.</span>
+    <span>{!! __('messages.pending_approval_count', ['count' => $pendingCount]) !!}</span>
 </div>
 @endif
 
@@ -28,12 +28,12 @@
         <table class="table table-hover mb-0">
             <thead>
                 <tr>
-                    <th>Nome</th>
-                    <th>E-mail</th>
-                    <th>Funcao</th>
-                    <th>Status</th>
-                    <th>Criado em</th>
-                    <th>Acoes</th>
+                    <th>{{ __('messages.name') }}</th>
+                    <th>{{ __('messages.email') }}</th>
+                    <th>{{ __('messages.role') }}</th>
+                    <th>{{ __('messages.status') }}</th>
+                    <th>{{ __('messages.created_at') }}</th>
+                    <th>{{ __('messages.actions') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -46,7 +46,7 @@
                                 </div>
                                 {{ $user->name }}
                                 @if($user->id === auth()->id())
-                                    <span class="count-badge" style="font-size: 0.6rem; background: #dbeafe; color: #1e40af;">voce</span>
+                                    <span class="count-badge" style="font-size: 0.6rem; background: #dbeafe; color: #1e40af;">{{ __('messages.you') }}</span>
                                 @endif
                             </div>
                         </td>
@@ -89,7 +89,7 @@
                                     <form method="POST" action="{{ route('users.approve', $user) }}" class="d-inline">
                                         @csrf
                                         @method('PATCH')
-                                        <button type="submit" class="btn btn-sm btn-outline-success btn-action" title="Aprovar">
+                                        <button type="submit" class="btn btn-sm btn-outline-success btn-action" title="{{ __('messages.approve') }}">
                                             <i class="bi bi-check-lg"></i>
                                         </button>
                                     </form>
@@ -101,7 +101,7 @@
                                         <form method="POST" action="{{ route('users.suspend', $user) }}" class="d-inline">
                                             @csrf
                                             @method('PATCH')
-                                            <button type="submit" class="btn btn-sm btn-outline-warning btn-action" title="Suspender" onclick="return confirm('Tem certeza que deseja suspender o usuario {{ $user->name }}?')">
+                                            <button type="submit" class="btn btn-sm btn-outline-warning btn-action" title="{{ __('messages.suspend') }}" onclick="return confirm('{{ __('messages.confirm_suspend_user', ['name' => $user->name]) }}')">
                                                 <i class="bi bi-pause-circle"></i>
                                             </button>
                                         </form>
@@ -109,18 +109,18 @@
                                         <form method="POST" action="{{ route('users.approve', $user) }}" class="d-inline">
                                             @csrf
                                             @method('PATCH')
-                                            <button type="submit" class="btn btn-sm btn-outline-success btn-action" title="Reativar">
+                                            <button type="submit" class="btn btn-sm btn-outline-success btn-action" title="{{ __('messages.reactivate') }}">
                                                 <i class="bi bi-play-circle"></i>
                                             </button>
                                         </form>
                                     @endif
                                 @endif
 
-                                <a href="{{ route('users.edit', $user) }}" class="btn btn-sm btn-outline-secondary btn-action" title="Editar">
+                                <a href="{{ route('users.edit', $user) }}" class="btn btn-sm btn-outline-secondary btn-action" title="{{ __('messages.edit') }}">
                                     <i class="bi bi-pencil"></i>
                                 </a>
                                 @if($user->id !== auth()->id())
-                                    <button type="button" class="btn btn-sm btn-outline-danger btn-action" title="Excluir" onclick="confirmDelete('{{ route('users.destroy', $user) }}', 'Tem certeza que deseja excluir o usuario {{ $user->name }}?')">
+                                    <button type="button" class="btn btn-sm btn-outline-danger btn-action" title="{{ __('messages.delete') }}" onclick="confirmDelete('{{ route('users.destroy', $user) }}', '{{ __('messages.confirm_delete_user', ['name' => $user->name]) }}')">
                                         <i class="bi bi-trash3"></i>
                                     </button>
                                 @endif
@@ -132,7 +132,7 @@
                         <td colspan="6">
                             <div class="empty-state">
                                 <i class="bi bi-people"></i>
-                                <p>Nenhum usuario encontrado.</p>
+                                <p>{{ __('messages.no_users_found') }}</p>
                             </div>
                         </td>
                     </tr>

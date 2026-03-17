@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="{{ app()->getLocale() == 'pt' ? 'pt-BR' : 'en' }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1310,53 +1310,53 @@
     </script>
 </head>
 <body>
-    <a href="#main-content" class="skip-link visually-hidden-focusable">Pular para o conteudo</a>
+    <a href="#main-content" class="skip-link visually-hidden-focusable">{{ __('messages.skip_to_content') }}</a>
 
     {{-- Mobile overlay --}}
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
     {{-- Sidebar --}}
-    <nav class="sidebar" id="sidebar" aria-label="Navegacao principal">
+    <nav class="sidebar" id="sidebar" aria-label="{{ __('messages.main_navigation') }}">
         <div class="sidebar-brand" style="justify-content: center; padding: 1.5rem 1.25rem 1.25rem;">
             <img src="{{ asset('images/mojo.png') }}" alt="Mojo Logo" style="width: 100%; max-width: 160px; object-fit: contain;">
         </div>
         <div class="sidebar-nav">
-            <div class="nav-label">Principal</div>
+            <div class="nav-label">{{ __('messages.nav_main') }}</div>
             <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                <i class="bi bi-grid-1x2-fill"></i> Dashboard
+                <i class="bi bi-grid-1x2-fill"></i> {{ __('messages.dashboard') }}
             </a>
 
-            <div class="nav-label">Operacional</div>
+            <div class="nav-label">{{ __('messages.nav_operational') }}</div>
             <a href="{{ route('tours.index') }}" class="nav-link {{ request()->routeIs('tours.*') ? 'active' : '' }}">
-                <i class="bi bi-map-fill"></i> Tours
+                <i class="bi bi-map-fill"></i> {{ __('messages.tours') }}
             </a>
             <a href="{{ route('clients.index') }}" class="nav-link {{ request()->routeIs('clients.*') ? 'active' : '' }}">
-                <i class="bi bi-people-fill"></i> Clientes
+                <i class="bi bi-people-fill"></i> {{ __('messages.clients') }}
             </a>
             <a href="{{ route('bookings.index') }}" class="nav-link {{ request()->routeIs('bookings.*') ? 'active' : '' }}">
-                <i class="bi bi-journal-bookmark-fill"></i> Reservas
+                <i class="bi bi-journal-bookmark-fill"></i> {{ __('messages.bookings') }}
             </a>
             <a href="{{ route('payments.index') }}" class="nav-link {{ request()->routeIs('payments.*') ? 'active' : '' }}">
-                <i class="bi bi-credit-card-2-front-fill"></i> Pagamentos
+                <i class="bi bi-credit-card-2-front-fill"></i> {{ __('messages.payments') }}
             </a>
 
             @if(auth()->user()?->canManage())
-            <div class="nav-label">Sistema</div>
+            <div class="nav-label">{{ __('messages.nav_system') }}</div>
             <a href="{{ route('email-templates.index') }}" class="nav-link {{ request()->routeIs('email-templates.*') ? 'active' : '' }}">
-                <i class="bi bi-envelope-paper-fill"></i> Templates de E-mail
+                <i class="bi bi-envelope-paper-fill"></i> {{ __('messages.email_templates') }}
             </a>
             <a href="{{ route('settings.index') }}" class="nav-link {{ request()->routeIs('settings.*') ? 'active' : '' }}">
-                <i class="bi bi-gear-fill"></i> Configuracoes
+                <i class="bi bi-gear-fill"></i> {{ __('messages.settings') }}
             </a>
             <a href="{{ route('logs.index') }}" class="nav-link {{ request()->routeIs('logs.*') ? 'active' : '' }}">
-                <i class="bi bi-clock-history"></i> Logs
+                <i class="bi bi-clock-history"></i> {{ __('messages.logs') }}
             </a>
             @endif
 
             @if(auth()->user()?->isAdmin())
-                <div class="nav-label">Administracao</div>
+                <div class="nav-label">{{ __('messages.nav_admin') }}</div>
                 <a href="{{ route('users.index') }}" class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}">
-                    <i class="bi bi-shield-lock-fill"></i> Usuarios
+                    <i class="bi bi-shield-lock-fill"></i> {{ __('messages.users') }}
                 </a>
             @endif
         </div>
@@ -1373,7 +1373,7 @@
                 </div>
                 <form method="POST" action="{{ route('logout') }}" class="ms-auto flex-shrink-0">
                     @csrf
-                    <button type="submit" class="header-icon-btn" style="width: 30px; height: 30px; border-radius: 8px; background: rgba(255,255,255,0.04); border: none; color: #64748b; font-size: 0.85rem;" title="Sair">
+                    <button type="submit" class="header-icon-btn" style="width: 30px; height: 30px; border-radius: 8px; background: rgba(255,255,255,0.04); border: none; color: #64748b; font-size: 0.85rem;" title="{{ __('messages.logout') }}">
                         <i class="bi bi-box-arrow-left"></i>
                     </button>
                 </form>
@@ -1385,7 +1385,7 @@
     <div class="main-content" id="main-content">
         <header class="top-header">
             <div class="d-flex align-items-center gap-3">
-                <button class="btn btn-link d-md-none text-dark p-0" onclick="toggleSidebar()" aria-label="Menu">
+                <button class="btn btn-link d-md-none text-dark p-0" onclick="toggleSidebar()" aria-label="{{ __('messages.menu') }}">
                     <i class="bi bi-list fs-4"></i>
                 </button>
                 <div>
@@ -1396,10 +1396,19 @@
                 </div>
             </div>
             <div class="d-flex align-items-center gap-2">
-                <button class="theme-toggle" onclick="toggleTheme()" title="Alternar tema">
+                <button class="theme-toggle" onclick="toggleTheme()" title="{{ __('messages.toggle_theme') }}">
                     <i class="bi bi-moon-fill"></i>
                     <i class="bi bi-sun-fill"></i>
                 </button>
+                <div class="dropdown">
+                    <button class="header-icon-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="{{ __('messages.toggle_theme') }}" style="font-size: 0.75rem; font-weight: 700; width: auto; padding: 0 0.5rem;">
+                        {{ app()->getLocale() == 'pt' ? 'PT' : 'EN' }}
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" style="min-width: 120px; border: 1px solid var(--border-color); border-radius: var(--radius); box-shadow: 0 10px 40px -5px rgba(0,0,0,0.12); padding: 0.25rem;">
+                        <li><a class="dropdown-item d-flex align-items-center gap-2 py-2 {{ app()->getLocale() == 'pt' ? 'fw-bold' : '' }}" href="{{ route('lang.switch', 'pt') }}" style="font-size: 0.82rem; border-radius: 0.375rem;">🇧🇷 Português</a></li>
+                        <li><a class="dropdown-item d-flex align-items-center gap-2 py-2 {{ app()->getLocale() == 'en' ? 'fw-bold' : '' }}" href="{{ route('lang.switch', 'en') }}" style="font-size: 0.82rem; border-radius: 0.375rem;">🇺🇸 English</a></li>
+                    </ul>
+                </div>
                 <div class="dropdown">
                     <button class="btn p-0 d-flex align-items-center gap-2 border-0 bg-transparent" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <div style="text-align: right; margin-right: 0.25rem;" class="d-none d-sm-block">
@@ -1415,13 +1424,13 @@
                             <div style="font-size: 0.82rem; font-weight: 600; color: var(--text-primary);">{{ auth()->user()->name ?? 'Usuario' }}</div>
                             <div style="font-size: 0.72rem; color: var(--text-muted);">{{ auth()->user()->email ?? '' }}</div>
                         </li>
-                        <li><a class="dropdown-item d-flex align-items-center gap-2 py-2 mt-1" href="{{ route('profile.edit') }}" style="font-size: 0.84rem; border-radius: 0.375rem;"><i class="bi bi-person text-muted"></i> Meu Perfil</a></li>
+                        <li><a class="dropdown-item d-flex align-items-center gap-2 py-2 mt-1" href="{{ route('profile.edit') }}" style="font-size: 0.84rem; border-radius: 0.375rem;"><i class="bi bi-person text-muted"></i> {{ __('messages.profile') }}</a></li>
                         <li><hr class="dropdown-divider my-1"></li>
                         <li>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button type="submit" class="dropdown-item d-flex align-items-center gap-2 py-2 text-danger" style="font-size: 0.84rem; border-radius: 0.375rem;">
-                                    <i class="bi bi-box-arrow-left"></i> Sair
+                                    <i class="bi bi-box-arrow-left"></i> {{ __('messages.logout') }}
                                 </button>
                             </form>
                         </li>
@@ -1443,15 +1452,15 @@
                     <div style="width: 56px; height: 56px; background: #fee2e2; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
                         <i class="bi bi-exclamation-triangle text-danger" style="font-size: 1.5rem;"></i>
                     </div>
-                    <h6 class="mb-1 fw-bold">Confirmar exclusao</h6>
-                    <p class="text-muted small mb-3" id="deleteModalMessage">Tem certeza que deseja excluir este item?</p>
+                    <h6 class="mb-1 fw-bold">{{ __('messages.confirm_delete') }}</h6>
+                    <p class="text-muted small mb-3" id="deleteModalMessage">{{ __('messages.confirm_delete_msg') }}</p>
                     <div class="d-flex gap-2 justify-content-center">
-                        <button type="button" class="btn btn-sm btn-light px-3" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-sm btn-light px-3" data-bs-dismiss="modal">{{ __('messages.cancel') }}</button>
                         <form id="deleteModalForm" method="POST">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-sm btn-danger px-3">
-                                <i class="bi bi-trash3"></i> Excluir
+                                <i class="bi bi-trash3"></i> {{ __('messages.delete') }}
                             </button>
                         </form>
                     </div>
@@ -1478,9 +1487,9 @@
                 warning: 'bi-exclamation-triangle-fill'
             };
             var titles = {
-                success: title || 'Sucesso',
-                error: title || 'Erro',
-                warning: title || 'Aviso'
+                success: title || '{{ __('messages.success') }}',
+                error: title || '{{ __('messages.error') }}',
+                warning: title || '{{ __('messages.warning') }}'
             };
 
             var toast = document.createElement('div');
@@ -1553,9 +1562,9 @@
         // Custom confirm dialog
         function rpmsConfirm(message, options) {
             options = options || {};
-            var title = options.title || 'Confirmar';
-            var okText = options.okText || 'Confirmar';
-            var cancelText = options.cancelText || 'Cancelar';
+            var title = options.title || '{{ __('messages.confirm') }}';
+            var okText = options.okText || '{{ __('messages.confirm') }}';
+            var cancelText = options.cancelText || '{{ __('messages.cancel') }}';
             var type = options.type || 'warning'; // warning, danger
             var icon = type === 'danger' ? 'bi-exclamation-triangle-fill' : 'bi-question-circle-fill';
             var iconColor = type === 'danger' ? '#ef4444' : '#f59e0b';
@@ -1605,7 +1614,7 @@
                 if (form && (btn.type === 'submit' || btn.tagName === 'BUTTON')) {
                     e.preventDefault();
                     rpmsConfirm(btn.getAttribute('data-confirm'), {
-                        title: btn.getAttribute('data-confirm-title') || 'Confirmar',
+                        title: btn.getAttribute('data-confirm-title') || '{{ __('messages.confirm') }}',
                         type: btn.getAttribute('data-confirm-type') || 'warning'
                     }).then(function(ok) {
                         if (ok) form.submit();
@@ -1620,7 +1629,7 @@
                 if (form._confirmed) { form._confirmed = false; return; }
                 e.preventDefault();
                 rpmsConfirm(confirmMsg, {
-                    title: form.getAttribute('data-confirm-title') || 'Confirmar',
+                    title: form.getAttribute('data-confirm-title') || '{{ __('messages.confirm') }}',
                     type: form.getAttribute('data-confirm-type') || 'warning'
                 }).then(function(ok) {
                     if (ok) { form._confirmed = true; form.submit(); }
@@ -1633,13 +1642,13 @@
 
     {{-- Flash message toasts --}}
     @if(session('success'))
-        <script>document.addEventListener('DOMContentLoaded', function() { showToast('success', 'Sucesso', '{{ session('success') }}'); });</script>
+        <script>document.addEventListener('DOMContentLoaded', function() { showToast('success', '{{ __('messages.success') }}', '{{ session('success') }}'); });</script>
     @endif
     @if(session('error'))
-        <script>document.addEventListener('DOMContentLoaded', function() { showToast('error', 'Erro', '{{ session('error') }}'); });</script>
+        <script>document.addEventListener('DOMContentLoaded', function() { showToast('error', '{{ __('messages.error') }}', '{{ session('error') }}'); });</script>
     @endif
     @if($errors->any())
-        <script>document.addEventListener('DOMContentLoaded', function() { showToast('error', 'Erro de Validacao', '{!! implode("<br>", $errors->all()) !!}', 8000); });</script>
+        <script>document.addEventListener('DOMContentLoaded', function() { showToast('error', '{{ __('messages.validation_error') }}', '{!! implode("<br>", $errors->all()) !!}', 8000); });</script>
     @endif
 
     @stack('scripts')

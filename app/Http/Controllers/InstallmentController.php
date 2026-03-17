@@ -32,13 +32,13 @@ class InstallmentController extends Controller
         $installment->status = $installment->resolveStatus();
         $installment->save();
 
-        ActivityLog::log('criou parcela', 'Installment', $installment->id, [
+        ActivityLog::log(__('messages.log_created_installment'), 'Installment', $installment->id, [
             'booking_id'         => $booking->id,
             'installment_number' => $installment->installment_number,
             'amount'             => $installment->amount,
         ]);
 
-        return redirect()->route('bookings.show', $booking)->with('success', 'Parcela adicionada com sucesso.');
+        return redirect()->route('bookings.show', $booking)->with('success', __('messages.installment_added'));
     }
 
     public function update(Request $request, Installment $installment)
@@ -56,13 +56,13 @@ class InstallmentController extends Controller
         $installment->status = $installment->resolveStatus();
         $installment->save();
 
-        ActivityLog::log('atualizou parcela', 'Installment', $installment->id, [
+        ActivityLog::log(__('messages.log_updated_installment'), 'Installment', $installment->id, [
             'booking_id'         => $installment->booking_id,
             'installment_number' => $installment->installment_number,
             'amount'             => $installment->amount,
         ]);
 
-        return redirect()->route('bookings.show', $installment->booking_id)->with('success', 'Parcela atualizada com sucesso.');
+        return redirect()->route('bookings.show', $installment->booking_id)->with('success', __('messages.installment_updated'));
     }
 
     public function markPaid(Installment $installment)
@@ -72,13 +72,13 @@ class InstallmentController extends Controller
             'paid_at' => now(),
         ]);
 
-        ActivityLog::log('marcou como pago', 'Installment', $installment->id, [
+        ActivityLog::log(__('messages.log_marked_paid'), 'Installment', $installment->id, [
             'booking_id'         => $installment->booking_id,
             'installment_number' => $installment->installment_number,
             'amount'             => $installment->amount,
         ]);
 
-        return redirect()->back()->with('success', 'Parcela marcada como paga.');
+        return redirect()->back()->with('success', __('messages.installment_marked_paid'));
     }
 
     public function destroy(Installment $installment)
@@ -92,9 +92,9 @@ class InstallmentController extends Controller
 
         $installment->delete();
 
-        ActivityLog::log('excluiu parcela', 'Installment', null, $details);
+        ActivityLog::log(__('messages.log_deleted_installment'), 'Installment', null, $details);
 
-        return redirect()->route('bookings.show', $bookingId)->with('success', 'Parcela excluída com sucesso.');
+        return redirect()->route('bookings.show', $bookingId)->with('success', __('messages.installment_deleted'));
     }
 
     public function toggleEmail(Installment $installment)
@@ -103,7 +103,7 @@ class InstallmentController extends Controller
             'email_paused' => !$installment->email_paused,
         ]);
 
-        $action = $installment->email_paused ? 'pausou e-mails' : 'reativou e-mails';
+        $action = $installment->email_paused ? __('messages.log_paused_emails') : __('messages.log_reactivated_emails');
 
         ActivityLog::log($action, 'Installment', $installment->id, [
             'booking_id'         => $installment->booking_id,
@@ -112,8 +112,8 @@ class InstallmentController extends Controller
         ]);
 
         $msg = $installment->email_paused
-            ? 'E-mails pausados para esta parcela.'
-            : 'E-mails reativados para esta parcela.';
+            ? __('messages.emails_paused')
+            : __('messages.emails_reactivated');
 
         return redirect()->back()->with('success', $msg);
     }
@@ -133,7 +133,7 @@ class InstallmentController extends Controller
         $template = EmailTemplate::where('type', $templateType)->first();
 
         if (!$template) {
-            return redirect()->back()->with('error', 'Template de e-mail não encontrado para o tipo: ' . $templateType);
+            return redirect()->back()->with('error', __('messages.template_not_found', ['type' => $templateType]));
         }
 
         $subject = PlaceholderHelper::replace($template->subject, $installment);
@@ -142,7 +142,7 @@ class InstallmentController extends Controller
         // Send email via SMTP
         $client = $installment->booking->client;
         if (!$client || !$client->email) {
-            return redirect()->back()->with('error', 'Cliente sem e-mail cadastrado.');
+            return redirect()->back()->with('error', __('messages.client_no_email'));
         }
 
         $emailStatus = 'enviado';
@@ -150,7 +150,7 @@ class InstallmentController extends Controller
             Mail::to($client->email)->send(new PaymentNotification($subject, $body));
         } catch (\Exception $e) {
             $emailStatus = 'falhou';
-            return redirect()->back()->with('error', 'Falha ao enviar e-mail: ' . $e->getMessage());
+            return redirect()->back()->with('error', __('messages.email_send_failed', ['error' => $e->getMessage()]));
         }
 
         // Create email log entry
@@ -171,11 +171,11 @@ class InstallmentController extends Controller
             'last_email_template_id' => $template->id,
         ]);
 
-        ActivityLog::log('reenviou e-mail', 'Installment', $installment->id, [
+        ActivityLog::log(__('messages.log_resent_email'), 'Installment', $installment->id, [
             'booking_id'    => $installment->booking_id,
             'template_type' => $templateType,
         ]);
 
-        return redirect()->back()->with('success', 'E-mail reenviado com sucesso.');
+        return redirect()->back()->with('success', __('messages.email_resent'));
     }
 }

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MOJO - Criar Conta</title>
+    <title>MOJO - Create Account</title>
     <link rel="icon" href="{{ asset('images/mojo.png') }}" type="image/png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
@@ -23,99 +23,79 @@
         }
         .auth-container {
             width: 100%;
-            max-width: 420px;
+            max-width: 440px;
         }
         .auth-card {
-            background: #fff;
+            background: rgba(255, 255, 255, 0.97);
             border-radius: 1rem;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
-            padding: 2rem;
-            border: 1px solid rgba(255,255,255,0.1);
+            padding: 2.5rem 2rem 2rem;
+            box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.5);
         }
         .auth-logo {
             text-align: center;
-            padding-bottom: 1.5rem;
-            margin-bottom: 1.5rem;
-            border-bottom: 1px solid #f1f5f9;
+            margin-bottom: 1.75rem;
         }
         .form-label {
-            font-size: 0.8rem;
+            font-size: 0.82rem;
             font-weight: 600;
             color: #374151;
         }
         .form-control, .form-select {
-            border-radius: 0.5rem;
-            padding: 0.6rem 0.75rem;
             font-size: 0.88rem;
+            padding: 0.6rem 0.85rem;
             border-color: #d1d5db;
         }
         .form-control:focus, .form-select:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, #3b82f6, #2563eb);
-            border-color: #2563eb;
-            font-weight: 600;
-            padding: 0.6rem;
-            border-radius: 0.5rem;
-            font-size: 0.88rem;
-        }
-        .btn-primary:hover {
-            background: linear-gradient(135deg, #2563eb, #1d4ed8);
-            border-color: #1d4ed8;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-        }
-        .auth-footer {
-            text-align: center;
-            margin-top: 1.25rem;
-            padding-top: 1.25rem;
-            border-top: 1px solid #f1f5f9;
-            color: #6b7280;
-            font-size: 0.84rem;
-        }
-        .auth-footer a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-        }
-        .auth-footer a:hover {
-            color: var(--primary-dark);
-        }
-        .alert-danger {
-            border-radius: 0.5rem;
-            font-size: 0.84rem;
-            border: none;
-            background: #fef2f2;
-            color: #991b1b;
-            border-left: 4px solid #ef4444;
-        }
-        .alert-warning {
-            border-radius: 0.5rem;
-            font-size: 0.84rem;
-            border: none;
-            background: #fefce8;
-            color: #854d0e;
-            border-left: 4px solid #eab308;
-        }
-        .alert-info {
-            border-radius: 0.5rem;
-            font-size: 0.84rem;
-            border: none;
-            background: #eff6ff;
-            color: #1e40af;
-            border-left: 4px solid #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
         .input-group-text {
             background: #f9fafb;
             border-color: #d1d5db;
-            color: #9ca3af;
+            color: #6b7280;
+        }
+        .btn-primary {
+            background: var(--primary);
+            border-color: var(--primary);
+            padding: 0.6rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+        .auth-footer {
+            text-align: center;
+            margin-top: 1.25rem;
+            font-size: 0.84rem;
+            color: #6b7280;
+        }
+        .auth-footer a {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .auth-footer a:hover {
+            text-decoration: underline;
         }
         .role-description {
-            font-size: 0.75rem;
+            font-size: 0.76rem;
             color: #6b7280;
-            margin-top: 0.25rem;
+            padding: 0.35rem 0.5rem;
+            margin-top: 0.35rem;
+            background: #f0f9ff;
+            border-radius: 0.375rem;
+            border-left: 3px solid var(--primary);
+        }
+        .alert {
+            font-size: 0.82rem;
+            border-radius: 0.5rem;
+        }
+        @media (max-width: 480px) {
+            .auth-card {
+                padding: 2rem 1.5rem 1.5rem;
+            }
         }
     </style>
 </head>
@@ -138,23 +118,23 @@
                 @csrf
 
                 <div class="mb-3">
-                    <label for="name" class="form-label">Nome</label>
+                    <label for="name" class="form-label">Name</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-person"></i></span>
-                        <input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}" placeholder="Seu nome completo" required autofocus>
+                        <input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}" placeholder="Your full name" required autofocus>
                     </div>
                 </div>
 
                 <div class="mb-3">
-                    <label for="email" class="form-label">E-mail</label>
+                    <label for="email" class="form-label">Email</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                        <input type="email" name="email" id="email" class="form-control" value="{{ old('email') }}" placeholder="seu@email.com" required>
+                        <input type="email" name="email" id="email" class="form-control" value="{{ old('email') }}" placeholder="your@email.com" required>
                     </div>
                 </div>
 
                 <div class="mb-3">
-                    <label for="role" class="form-label">Funcao</label>
+                    <label for="role" class="form-label">Role</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-shield-check"></i></span>
                         <select name="role" id="role" class="form-select" required>
@@ -165,52 +145,52 @@
                     </div>
                     <div class="role-description">
                         <i class="bi bi-info-circle me-1"></i>
-                        <span id="roleDesc">Selecione a funcao desejada</span>
+                        <span id="roleDesc">Select the desired role</span>
                     </div>
                 </div>
 
                 <div class="mb-3">
-                    <label for="password" class="form-label">Senha</label>
+                    <label for="password" class="form-label">Password</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                        <input type="password" name="password" id="password" class="form-control" placeholder="Minimo 8 caracteres" required>
+                        <input type="password" name="password" id="password" class="form-control" placeholder="Minimum 8 characters" required>
                     </div>
                 </div>
 
                 <div class="mb-3">
-                    <label for="password_confirmation" class="form-label">Confirmar Senha</label>
+                    <label for="password_confirmation" class="form-label">Confirm Password</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
-                        <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" placeholder="Repita a senha" required>
+                        <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" placeholder="Repeat password" required>
                     </div>
                 </div>
 
                 <div class="alert alert-warning mb-3 py-2">
-                    <i class="bi bi-clock me-1"></i> Apos o registro, sua conta precisara ser aprovada pelo administrador.
+                    <i class="bi bi-clock me-1"></i> After registration, your account will need to be approved by the administrator.
                 </div>
 
                 <button type="submit" class="btn btn-primary w-100">
-                    <i class="bi bi-person-plus me-1"></i> Criar Conta
+                    <i class="bi bi-person-plus me-1"></i> Create Account
                 </button>
             </form>
 
             <div class="auth-footer">
-                Ja tem conta? <a href="{{ route('login') }}">Entrar</a>
+                Already have an account? <a href="{{ route('login') }}">Login</a>
             </div>
         </div>
     </div>
 
     <script>
         const roleDescriptions = {
-            'manager': 'Gerente: Pode gerenciar tours, clientes, reservas e pagamentos.',
-            'viewer': 'Visualizador: Acesso somente leitura aos seus proprios dados.'
+            'manager': 'Manager: Can manage tours, clients, bookings, and payments.',
+            'viewer': 'Viewer: Read-only access to your own data.'
         };
 
         const roleSelect = document.getElementById('role');
         const roleDesc = document.getElementById('roleDesc');
 
         function updateRoleDesc() {
-            roleDesc.textContent = roleDescriptions[roleSelect.value] || 'Selecione a funcao desejada';
+            roleDesc.textContent = roleDescriptions[roleSelect.value] || 'Select the desired role';
         }
 
         roleSelect.addEventListener('change', updateRoleDesc);

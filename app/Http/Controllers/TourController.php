@@ -53,9 +53,9 @@ class TourController extends Controller
 
         $tour = Tour::create($validated);
 
-        ActivityLog::log('criou', 'Tour', $tour->id, ['name' => $tour->name]);
+        ActivityLog::log(__('messages.log_created'), 'Tour', $tour->id, ['name' => $tour->name]);
 
-        return redirect()->route('tours.show', $tour)->with('success', 'Tour criado com sucesso.');
+        return redirect()->route('tours.show', $tour)->with('success', __('messages.tour_created'));
     }
 
     public function show(Tour $tour)
@@ -84,9 +84,9 @@ class TourController extends Controller
 
         $tour->update($validated);
 
-        ActivityLog::log('atualizou', 'Tour', $tour->id, ['name' => $tour->name]);
+        ActivityLog::log(__('messages.log_updated'), 'Tour', $tour->id, ['name' => $tour->name]);
 
-        return redirect()->route('tours.show', $tour)->with('success', 'Tour atualizado com sucesso.');
+        return redirect()->route('tours.show', $tour)->with('success', __('messages.tour_updated'));
     }
 
     public function toggleStatus(Tour $tour)
@@ -94,11 +94,11 @@ class TourController extends Controller
         $tour->status = $tour->status === 'ativo' ? 'inativo' : 'ativo';
         $tour->save();
 
-        ActivityLog::log('alterou status', 'Tour', $tour->id, [
+        ActivityLog::log(__('messages.log_status_changed'), 'Tour', $tour->id, [
             'name'   => $tour->name,
             'status' => $tour->status,
         ]);
 
-        return redirect()->back()->with('success', 'Status do tour alterado para ' . $tour->status . '.');
+        return redirect()->back()->with('success', __('messages.tour_status_changed', ['status' => $tour->status]));
     }
 }

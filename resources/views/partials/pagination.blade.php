@@ -2,13 +2,13 @@
 <div class="rpms-pagination">
     <div class="rpms-pagination-info">
         <span>
-            Mostrando
+            {{ __('messages.showing') }}
             <strong>{{ $paginator->firstItem() ?? 0 }}</strong>
-            a
+            {{ __('messages.to') }}
             <strong>{{ $paginator->lastItem() ?? 0 }}</strong>
-            de
+            {{ __('messages.of') }}
             <strong>{{ $paginator->total() }}</strong>
-            resultado(s)
+            {{ __('messages.results') }}
         </span>
     </div>
     <nav>
@@ -20,7 +20,7 @@
                 </li>
             @else
                 <li class="rpms-page-item">
-                    <a class="rpms-page-link" href="{{ $paginator->url(1) }}" title="Primeira página">
+                    <a class="rpms-page-link" href="{{ $paginator->url(1) }}" title="{{ __('messages.first_page') }}">
                         <i class="bi bi-chevron-double-left"></i>
                     </a>
                 </li>
@@ -33,7 +33,7 @@
                 </li>
             @else
                 <li class="rpms-page-item">
-                    <a class="rpms-page-link" href="{{ $paginator->previousPageUrl() }}" title="Anterior">
+                    <a class="rpms-page-link" href="{{ $paginator->previousPageUrl() }}" title="{{ __('messages.previous') }}">
                         <i class="bi bi-chevron-left"></i>
                     </a>
                 </li>
@@ -92,7 +92,7 @@
             {{-- Next Page --}}
             @if ($paginator->hasMorePages())
                 <li class="rpms-page-item">
-                    <a class="rpms-page-link" href="{{ $paginator->nextPageUrl() }}" title="Próxima">
+                    <a class="rpms-page-link" href="{{ $paginator->nextPageUrl() }}" title="{{ __('messages.next') }}">
                         <i class="bi bi-chevron-right"></i>
                     </a>
                 </li>
@@ -109,7 +109,7 @@
                 </li>
             @else
                 <li class="rpms-page-item">
-                    <a class="rpms-page-link" href="{{ $paginator->url($paginator->lastPage()) }}" title="Última página">
+                    <a class="rpms-page-link" href="{{ $paginator->url($paginator->lastPage()) }}" title="{{ __('messages.last_page') }}">
                         <i class="bi bi-chevron-double-right"></i>
                     </a>
                 </li>

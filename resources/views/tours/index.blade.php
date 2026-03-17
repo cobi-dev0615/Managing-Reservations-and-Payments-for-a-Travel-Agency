@@ -1,15 +1,15 @@
 @extends('layouts.app')
 
-@section('title', 'Tours')
-@section('page-title', 'Tours')
-@section('page-subtitle', 'Gerencie todos os tours e pacotes de viagem')
+@section('title', __('messages.tours'))
+@section('page-title', __('messages.tours'))
+@section('page-subtitle', __('messages.manage_tours_subtitle'))
 
 @section('content')
 <div class="page-header">
     <div></div>
     @if(auth()->user()->canManage())
     <a href="{{ route('tours.create') }}" class="btn btn-primary">
-        <i class="bi bi-plus-lg"></i> Novo Tour
+        <i class="bi bi-plus-lg"></i> {{ __('messages.new_tour') }}
     </a>
     @endif
 </div>
@@ -18,29 +18,29 @@
 <div class="filter-bar">
     <form method="GET" action="{{ route('tours.index') }}" class="row g-3 align-items-end">
         <div class="col-md-3">
-            <label for="type" class="form-label">Tipo</label>
+            <label for="type" class="form-label">{{ __('messages.type') }}</label>
             <select name="type" id="type" class="form-select">
-                <option value="">Todos os tipos</option>
-                <option value="grupo" {{ request('type') == 'grupo' ? 'selected' : '' }}>Grupo</option>
-                <option value="privado" {{ request('type') == 'privado' ? 'selected' : '' }}>Privado</option>
-                <option value="agencia" {{ request('type') == 'agencia' ? 'selected' : '' }}>Agencia</option>
-                <option value="influencer" {{ request('type') == 'influencer' ? 'selected' : '' }}>Influencer</option>
+                <option value="">{{ __('messages.all_types') }}</option>
+                <option value="grupo" {{ request('type') == 'grupo' ? 'selected' : '' }}>{{ __('messages.group') }}</option>
+                <option value="privado" {{ request('type') == 'privado' ? 'selected' : '' }}>{{ __('messages.private') }}</option>
+                <option value="agencia" {{ request('type') == 'agencia' ? 'selected' : '' }}>{{ __('messages.agency') }}</option>
+                <option value="influencer" {{ request('type') == 'influencer' ? 'selected' : '' }}>{{ __('messages.influencer') }}</option>
             </select>
         </div>
         <div class="col-md-3">
-            <label for="status" class="form-label">Status</label>
+            <label for="status" class="form-label">{{ __('messages.status') }}</label>
             <select name="status" id="status" class="form-select">
-                <option value="">Todos</option>
-                <option value="ativo" {{ request('status') == 'ativo' ? 'selected' : '' }}>Ativo</option>
-                <option value="inativo" {{ request('status') == 'inativo' ? 'selected' : '' }}>Inativo</option>
+                <option value="">{{ __('messages.all') }}</option>
+                <option value="ativo" {{ request('status') == 'ativo' ? 'selected' : '' }}>{{ __('messages.active') }}</option>
+                <option value="inativo" {{ request('status') == 'inativo' ? 'selected' : '' }}>{{ __('messages.inactive') }}</option>
             </select>
         </div>
         <div class="col-md-3">
-            <label for="search" class="form-label">Buscar</label>
-            <input type="text" name="search" id="search" class="form-control" placeholder="Nome ou codigo..." value="{{ request('search') }}">
+            <label for="search" class="form-label">{{ __('messages.search') }}</label>
+            <input type="text" name="search" id="search" class="form-control" placeholder="{{ __('messages.name_or_code') }}" value="{{ request('search') }}">
         </div>
         <div class="col-md-2">
-            <label for="per_page" class="form-label">Exibir</label>
+            <label for="per_page" class="form-label">{{ __('messages.display') }}</label>
             <select name="per_page" id="per_page" class="form-select">
                 @foreach([10, 25, 50, 100] as $size)
                     <option value="{{ $size }}" {{ request('per_page', 10) == $size ? 'selected' : '' }}>{{ $size }}</option>
@@ -64,13 +64,13 @@
         <table class="table table-hover mb-0">
             <thead>
                 <tr>
-                    <th>Codigo</th>
-                    <th>Nome</th>
-                    <th>Tipo</th>
-                    <th>Moeda</th>
-                    <th>Viajantes</th>
-                    <th>Status</th>
-                    <th>Acoes</th>
+                    <th>{{ __('messages.code') }}</th>
+                    <th>{{ __('messages.name') }}</th>
+                    <th>{{ __('messages.type') }}</th>
+                    <th>{{ __('messages.currency') }}</th>
+                    <th>{{ __('messages.travelers') }}</th>
+                    <th>{{ __('messages.status') }}</th>
+                    <th>{{ __('messages.actions') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -114,16 +114,16 @@
                         </td>
                         <td>
                             <div class="d-flex gap-1">
-                                <a href="{{ route('tours.show', $tour) }}" class="btn btn-sm btn-outline-primary btn-action" title="Ver">
+                                <a href="{{ route('tours.show', $tour) }}" class="btn btn-sm btn-outline-primary btn-action" title="{{ __('messages.view') }}">
                                     <i class="bi bi-eye"></i>
                                 </a>
                                 @if(auth()->user()->canManage())
-                                <a href="{{ route('tours.edit', $tour) }}" class="btn btn-sm btn-outline-secondary btn-action" title="Editar">
+                                <a href="{{ route('tours.edit', $tour) }}" class="btn btn-sm btn-outline-secondary btn-action" title="{{ __('messages.edit') }}">
                                     <i class="bi bi-pencil"></i>
                                 </a>
                                 <form action="{{ route('tours.toggle-status', $tour) }}" method="POST" class="d-inline">
                                     @csrf
-                                    <button type="submit" class="btn btn-sm btn-outline-warning btn-action" title="{{ $tour->status === 'ativo' ? 'Desativar' : 'Ativar' }}" data-confirm="Deseja alterar o status deste tour?" data-confirm-title="Alterar Status">
+                                    <button type="submit" class="btn btn-sm btn-outline-warning btn-action" title="{{ $tour->status === 'ativo' ? __('messages.deactivate') : __('messages.activate') }}" data-confirm="{{ __('messages.change_status_confirm') }}" data-confirm-title="{{ __('messages.change_status') }}">
                                         <i class="bi bi-arrow-repeat"></i>
                                     </button>
                                 </form>
@@ -136,7 +136,7 @@
                         <td colspan="7">
                             <div class="empty-state">
                                 <i class="bi bi-map"></i>
-                                <p>Nenhum tour encontrado.</p>
+                                <p>{{ __('messages.no_tours_found') }}</p>
                             </div>
                         </td>
                     </tr>
@@ -149,13 +149,13 @@
 {{-- Results count & pagination --}}
 <div class="rpms-pagination">
     <div class="rpms-pagination-info">
-        Mostrando
+        {{ __('messages.showing') }}
         <strong>{{ $tours->firstItem() ?? 0 }}</strong>
-        a
+        {{ __('messages.to') }}
         <strong>{{ $tours->lastItem() ?? 0 }}</strong>
-        de
+        {{ __('messages.of') }}
         <strong>{{ $tours->total() }}</strong>
-        tour(s)
+        {{ __('messages.tours_count') }}
     </div>
     @if($tours->hasPages())
         <nav>

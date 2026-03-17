@@ -14,6 +14,14 @@ use App\Http\Controllers\LogController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 
+// Language Switcher
+Route::get('lang/{locale}', function (string $locale) {
+    if (in_array($locale, ['en', 'pt'])) {
+        session()->put('locale', $locale);
+    }
+    return redirect()->back();
+})->name('lang.switch');
+
 // Authentication Routes
 Route::middleware('guest')->group(function () {
     Route::get('login', [AuthController::class, 'showLogin'])->name('login');
@@ -36,7 +44,6 @@ Route::middleware(['auth', 'approved'])->group(function () {
 
     // Tours — everyone can view, only admin & manager can create/edit/delete
     Route::get('tours', [TourController::class, 'index'])->name('tours.index');
-    Route::get('tours/{tour}', [TourController::class, 'show'])->name('tours.show');
     Route::middleware('can.manage')->group(function () {
         Route::get('tours/create', [TourController::class, 'create'])->name('tours.create');
         Route::post('tours', [TourController::class, 'store'])->name('tours.store');
@@ -45,10 +52,10 @@ Route::middleware(['auth', 'approved'])->group(function () {
         Route::delete('tours/{tour}', [TourController::class, 'destroy'])->name('tours.destroy');
         Route::post('tours/{tour}/toggle-status', [TourController::class, 'toggleStatus'])->name('tours.toggle-status');
     });
+    Route::get('tours/{tour}', [TourController::class, 'show'])->name('tours.show');
 
     // Clients — everyone can view, only admin & manager can create/edit/delete
     Route::get('clients', [ClientController::class, 'index'])->name('clients.index');
-    Route::get('clients/{client}', [ClientController::class, 'show'])->name('clients.show');
     Route::middleware('can.manage')->group(function () {
         Route::get('clients/create', [ClientController::class, 'create'])->name('clients.create');
         Route::post('clients', [ClientController::class, 'store'])->name('clients.store');
@@ -56,10 +63,10 @@ Route::middleware(['auth', 'approved'])->group(function () {
         Route::put('clients/{client}', [ClientController::class, 'update'])->name('clients.update');
         Route::delete('clients/{client}', [ClientController::class, 'destroy'])->name('clients.destroy');
     });
+    Route::get('clients/{client}', [ClientController::class, 'show'])->name('clients.show');
 
     // Bookings — everyone can view, only admin & manager can create/edit/delete
     Route::get('bookings', [BookingController::class, 'index'])->name('bookings.index');
-    Route::get('bookings/{booking}', [BookingController::class, 'show'])->name('bookings.show');
     Route::middleware('can.manage')->group(function () {
         Route::get('bookings/create', [BookingController::class, 'create'])->name('bookings.create');
         Route::post('bookings', [BookingController::class, 'store'])->name('bookings.store');
@@ -67,6 +74,7 @@ Route::middleware(['auth', 'approved'])->group(function () {
         Route::put('bookings/{booking}', [BookingController::class, 'update'])->name('bookings.update');
         Route::delete('bookings/{booking}', [BookingController::class, 'destroy'])->name('bookings.destroy');
     });
+    Route::get('bookings/{booking}', [BookingController::class, 'show'])->name('bookings.show');
 
     // Installments — only admin & manager
     Route::middleware('can.manage')->group(function () {

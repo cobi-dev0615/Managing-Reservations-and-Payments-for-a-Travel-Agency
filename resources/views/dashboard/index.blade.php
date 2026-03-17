@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard')
-@section('page-title', 'Dashboard Operacional')
-@section('page-subtitle', 'Visao geral do sistema de reservas e pagamentos')
+@section('title', __('messages.dashboard'))
+@section('page-title', __('messages.operational_dashboard'))
+@section('page-subtitle', __('messages.dashboard_subtitle'))
 
 @section('content')
 {{-- Payment Status Cards --}}
@@ -16,11 +16,11 @@
                             <i class="bi bi-clock-fill"></i>
                         </div>
                         <div>
-                            <div class="stat-card-label">Vence em Breve</div>
+                            <div class="stat-card-label">{{ __('messages.due_soon') }}</div>
                             <div class="stat-card-value text-warning">{{ $statusCounts['vence_breve'] }}</div>
                         </div>
                     </div>
-                    <div class="text-muted mt-2" style="font-size: 0.7rem;">Proximos 7 dias</div>
+                    <div class="text-muted mt-2" style="font-size: 0.7rem;">{{ __('messages.next_7_days') }}</div>
                 </div>
             </div>
         </a>
@@ -34,7 +34,7 @@
                             <i class="bi bi-calendar-event-fill"></i>
                         </div>
                         <div>
-                            <div class="stat-card-label">Vence Hoje</div>
+                            <div class="stat-card-label">{{ __('messages.due_today') }}</div>
                             <div class="stat-card-value text-primary">{{ $statusCounts['vence_hoje'] }}</div>
                         </div>
                     </div>
@@ -52,7 +52,7 @@
                             <i class="bi bi-exclamation-triangle-fill"></i>
                         </div>
                         <div>
-                            <div class="stat-card-label">Atrasado</div>
+                            <div class="stat-card-label">{{ __('messages.overdue') }}</div>
                             <div class="stat-card-value text-danger">{{ $statusCounts['atrasado'] }}</div>
                         </div>
                     </div>
@@ -69,7 +69,7 @@
                             <i class="bi bi-check-circle-fill"></i>
                         </div>
                         <div>
-                            <div class="stat-card-label">Pago</div>
+                            <div class="stat-card-label">{{ __('messages.paid') }}</div>
                             <div class="stat-card-value text-success">{{ $statusCounts['pago'] }}</div>
                         </div>
                     </div>
@@ -86,7 +86,7 @@
                             <i class="bi bi-link-45deg"></i>
                         </div>
                         <div>
-                            <div class="stat-card-label">Falta Link</div>
+                            <div class="stat-card-label">{{ __('messages.missing_link') }}</div>
                             <div class="stat-card-value" style="color: #4f46e5;">{{ $statusCounts['falta_link'] }}</div>
                         </div>
                     </div>
@@ -98,7 +98,7 @@
 
 {{-- Currency Totals --}}
 @if($currencyTotals->count() > 0)
-<div class="section-heading">Valores Pendentes por Moeda</div>
+<div class="section-heading">{{ __('messages.pending_values_currency') }}</div>
 <div class="row g-3 mb-4">
     @foreach($currencyTotals as $currency => $data)
     <div class="col-md-4">
@@ -107,7 +107,7 @@
                 <span class="currency-badge currency-{{ $currency }}" style="font-size: 0.85rem; padding: 0.4rem 0.75rem;">{{ $currency }}</span>
                 <div>
                     <div class="fw-bold" style="font-size: 1.15rem; letter-spacing: -0.02em;">{{ number_format($data->total, 2, ',', '.') }}</div>
-                    <div class="text-muted" style="font-size: 0.75rem;">{{ $data->count }} parcela(s) pendente(s)</div>
+                    <div class="text-muted" style="font-size: 0.75rem;">{{ $data->count }} {{ __('messages.pending_installments') }}</div>
                 </div>
             </div>
         </div>
@@ -117,13 +117,13 @@
 @endif
 
 {{-- Booking Stats --}}
-<div class="section-heading">Resumo de Reservas</div>
+<div class="section-heading">{{ __('messages.booking_summary') }}</div>
 <div class="row g-3 mb-4">
     <div class="col-md-3 col-6">
         <a href="{{ route('bookings.index') }}" class="text-decoration-none">
             <div class="card stat-card">
                 <div class="card-body text-center py-3">
-                    <div class="stat-card-label">Total Reservas</div>
+                    <div class="stat-card-label">{{ __('messages.total_bookings') }}</div>
                     <div class="fs-4 fw-bold mt-1">{{ $bookingStats['total'] }}</div>
                 </div>
             </div>
@@ -133,7 +133,7 @@
         <a href="{{ route('bookings.index', ['status' => 'pendente']) }}" class="text-decoration-none">
             <div class="card stat-card">
                 <div class="card-body text-center py-3">
-                    <div class="stat-card-label">Pendentes</div>
+                    <div class="stat-card-label">{{ __('messages.pending') }}</div>
                     <div class="fs-4 fw-bold text-warning mt-1">{{ $bookingStats['pendente'] }}</div>
                 </div>
             </div>
@@ -143,7 +143,7 @@
         <a href="{{ route('bookings.index', ['status' => 'confirmado']) }}" class="text-decoration-none">
             <div class="card stat-card">
                 <div class="card-body text-center py-3">
-                    <div class="stat-card-label">Confirmadas</div>
+                    <div class="stat-card-label">{{ __('messages.confirmed') }}</div>
                     <div class="fs-4 fw-bold text-success mt-1">{{ $bookingStats['confirmado'] }}</div>
                 </div>
             </div>
@@ -153,7 +153,7 @@
         <a href="{{ route('bookings.index', ['status' => 'concluido']) }}" class="text-decoration-none">
             <div class="card stat-card">
                 <div class="card-body text-center py-3">
-                    <div class="stat-card-label">Concluidas</div>
+                    <div class="stat-card-label">{{ __('messages.completed') }}</div>
                     <div class="fs-4 fw-bold text-primary mt-1">{{ $bookingStats['concluido'] }}</div>
                 </div>
             </div>
@@ -163,22 +163,20 @@
 
 {{-- Charts --}}
 <div class="row g-3 mb-4">
-    {{-- Monthly Revenue --}}
     <div class="col-lg-8">
         <div class="card h-100">
             <div class="card-header d-flex align-items-center gap-2">
-                <i class="bi bi-bar-chart-fill text-success me-1"></i> Receita Mensal (Ultimos 6 Meses)
+                <i class="bi bi-bar-chart-fill text-success me-1"></i> {{ __('messages.monthly_revenue') }}
             </div>
             <div class="card-body">
                 <canvas id="revenueChart" height="260"></canvas>
             </div>
         </div>
     </div>
-    {{-- Payment Status --}}
     <div class="col-lg-4">
         <div class="card h-100">
             <div class="card-header d-flex align-items-center gap-2">
-                <i class="bi bi-pie-chart-fill text-primary me-1"></i> Status dos Pagamentos
+                <i class="bi bi-pie-chart-fill text-primary me-1"></i> {{ __('messages.payment_status') }}
             </div>
             <div class="card-body d-flex align-items-center justify-content-center">
                 <canvas id="paymentStatusChart" height="240"></canvas>
@@ -188,22 +186,20 @@
 </div>
 
 <div class="row g-3 mb-4">
-    {{-- Bookings per Month --}}
     <div class="col-lg-8">
         <div class="card h-100">
             <div class="card-header d-flex align-items-center gap-2">
-                <i class="bi bi-graph-up text-info me-1"></i> Reservas por Mes (Ultimos 6 Meses)
+                <i class="bi bi-graph-up text-info me-1"></i> {{ __('messages.bookings_per_month') }}
             </div>
             <div class="card-body">
                 <canvas id="bookingsChart" height="260"></canvas>
             </div>
         </div>
     </div>
-    {{-- Tours by Type --}}
     <div class="col-lg-4">
         <div class="card h-100">
             <div class="card-header d-flex align-items-center gap-2">
-                <i class="bi bi-compass-fill text-warning me-1"></i> Tours por Tipo
+                <i class="bi bi-compass-fill text-warning me-1"></i> {{ __('messages.tours_by_type') }}
             </div>
             <div class="card-body d-flex align-items-center justify-content-center">
                 <canvas id="tourTypeChart" height="240"></canvas>
@@ -213,12 +209,11 @@
 </div>
 
 <div class="row g-3">
-    {{-- Upcoming Installments --}}
     <div class="col-lg-6">
         <div class="card h-100">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <span><i class="bi bi-clock text-primary me-1"></i> Proximos Vencimentos</span>
-                <a href="{{ route('payments.index') }}" class="btn btn-sm btn-outline-primary">Ver Todos</a>
+                <span><i class="bi bi-clock text-primary me-1"></i> {{ __('messages.upcoming_due') }}</span>
+                <a href="{{ route('payments.index') }}" class="btn btn-sm btn-outline-primary">{{ __('messages.view_all') }}</a>
             </div>
             <div class="card-body p-0">
                 @if($upcomingInstallments->count() > 0)
@@ -226,11 +221,11 @@
                     <table class="table table-sm table-hover mb-0">
                         <thead>
                             <tr>
-                                <th>Vencimento</th>
-                                <th>Cliente</th>
-                                <th>Tour</th>
-                                <th>Valor</th>
-                                <th>Status</th>
+                                <th>{{ __('messages.due_date') }}</th>
+                                <th>{{ __('messages.client') }}</th>
+                                <th>{{ __('messages.tour') }}</th>
+                                <th>{{ __('messages.value') }}</th>
+                                <th>{{ __('messages.status') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -238,7 +233,7 @@
                             <tr>
                                 <td>
                                     @if($inst->due_date->isToday())
-                                        <span class="badge bg-primary">HOJE</span>
+                                        <span class="badge bg-primary">{{ __('messages.today') }}</span>
                                     @else
                                         {{ $inst->due_date->format('d/m') }}
                                     @endif
@@ -264,19 +259,18 @@
                 @else
                 <div class="empty-state">
                     <i class="bi bi-calendar-check"></i>
-                    <p>Nenhum vencimento nos proximos 7 dias</p>
+                    <p>{{ __('messages.no_due_7_days') }}</p>
                 </div>
                 @endif
             </div>
         </div>
     </div>
 
-    {{-- Overdue Installments --}}
     <div class="col-lg-6">
         <div class="card h-100">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <span><i class="bi bi-exclamation-triangle text-danger me-1"></i> Parcelas em Atraso</span>
-                <a href="{{ route('payments.index', ['status' => 'atrasado']) }}" class="btn btn-sm btn-outline-danger">Ver Todos</a>
+                <span><i class="bi bi-exclamation-triangle text-danger me-1"></i> {{ __('messages.overdue_installments') }}</span>
+                <a href="{{ route('payments.index', ['status' => 'atrasado']) }}" class="btn btn-sm btn-outline-danger">{{ __('messages.view_all') }}</a>
             </div>
             <div class="card-body p-0">
                 @if($overdueInstallments->count() > 0)
@@ -284,11 +278,11 @@
                     <table class="table table-sm table-hover mb-0">
                         <thead>
                             <tr>
-                                <th>Vencimento</th>
-                                <th>Cliente</th>
-                                <th>Tour</th>
-                                <th>Valor</th>
-                                <th>Dias</th>
+                                <th>{{ __('messages.due_date') }}</th>
+                                <th>{{ __('messages.client') }}</th>
+                                <th>{{ __('messages.tour') }}</th>
+                                <th>{{ __('messages.value') }}</th>
+                                <th>{{ __('messages.days') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -309,7 +303,7 @@
                                 </td>
                                 <td>
                                     @php $overdueDays = (int) $inst->due_date->diffInDays(now()); @endphp
-                                    <span class="badge bg-danger" style="font-size: 0.68rem;">{{ $overdueDays == 0 ? '< 1 dia' : $overdueDays . 'd' }}</span>
+                                    <span class="badge bg-danger" style="font-size: 0.68rem;">{{ $overdueDays == 0 ? __('messages.less_than_1_day') : $overdueDays . 'd' }}</span>
                                 </td>
                             </tr>
                             @endforeach
@@ -319,7 +313,7 @@
                 @else
                 <div class="empty-state">
                     <i class="bi bi-check-circle"></i>
-                    <p>Nenhuma parcela em atraso</p>
+                    <p>{{ __('messages.no_overdue') }}</p>
                 </div>
                 @endif
             </div>
@@ -330,8 +324,8 @@
 {{-- Recent Activity --}}
 <div class="card mt-3">
     <div class="card-header d-flex justify-content-between align-items-center">
-        <span><i class="bi bi-activity text-muted me-1"></i> Atividade Recente</span>
-        <a href="{{ route('logs.index') }}" class="btn btn-sm btn-outline-secondary">Ver Logs</a>
+        <span><i class="bi bi-activity text-muted me-1"></i> {{ __('messages.recent_activity') }}</span>
+        <a href="{{ route('logs.index') }}" class="btn btn-sm btn-outline-secondary">{{ __('messages.view_logs') }}</a>
     </div>
     <div class="card-body p-0">
         @if($recentActivity->count() > 0)
@@ -339,9 +333,9 @@
             <table class="table table-sm table-hover mb-0">
                 <thead>
                     <tr>
-                        <th>Data/Hora</th>
-                        <th>Acao</th>
-                        <th>Entidade</th>
+                        <th>{{ __('messages.datetime') }}</th>
+                        <th>{{ __('messages.action') }}</th>
+                        <th>{{ __('messages.entity') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -371,7 +365,7 @@
         @else
         <div class="empty-state">
             <i class="bi bi-clock-history"></i>
-            <p>Nenhuma atividade registrada</p>
+            <p>{{ __('messages.no_activity') }}</p>
         </div>
         @endif
     </div>
@@ -488,7 +482,7 @@ document.addEventListener('DOMContentLoaded', function() {
         data: {
             labels: bookingsLabels,
             datasets: [{
-                label: 'Reservas',
+                label: '{{ __('messages.chart_bookings') }}',
                 data: bookingsData,
                 borderColor: '#3b82f6',
                 backgroundColor: isDark ? 'rgba(59,130,246,0.1)' : 'rgba(59,130,246,0.08)',

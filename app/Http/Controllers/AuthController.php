@@ -32,7 +32,7 @@ class AuthController extends Controller
                 $request->session()->invalidate();
                 $request->session()->regenerateToken();
                 return back()->withErrors([
-                    'status' => 'Sua conta esta aguardando aprovacao do administrador.',
+                    'status' => __('messages.pending_approval_msg'),
                 ])->onlyInput('email');
             }
 
@@ -41,7 +41,7 @@ class AuthController extends Controller
                 $request->session()->invalidate();
                 $request->session()->regenerateToken();
                 return back()->withErrors([
-                    'status' => 'Sua conta foi suspensa. Entre em contato com o administrador.',
+                    'status' => __('messages.account_suspended_msg'),
                 ])->onlyInput('email');
             }
 
@@ -50,7 +50,7 @@ class AuthController extends Controller
         }
 
         return back()->withErrors([
-            'email' => 'Credenciais invalidas.',
+            'email' => __('messages.invalid_credentials'),
         ])->onlyInput('email');
     }
 
@@ -80,7 +80,7 @@ class AuthController extends Controller
             'status' => User::STATUS_PENDING,
         ]);
 
-        return redirect()->route('login')->with('info', 'Conta criada com sucesso! Aguarde a aprovacao do administrador para acessar o sistema.');
+        return redirect()->route('login')->with('info', __('messages.registration_success'));
     }
 
     public function logout(Request $request)

@@ -20,6 +20,15 @@ class User extends Authenticatable
         self::ROLE_VIEWER => 'Visualizador',
     ];
 
+    public static function translatedRoles(): array
+    {
+        return [
+            self::ROLE_ADMIN => __('messages.role_admin'),
+            self::ROLE_MANAGER => __('messages.role_manager'),
+            self::ROLE_VIEWER => __('messages.role_viewer'),
+        ];
+    }
+
     const STATUS_PENDING = 'pending';
     const STATUS_APPROVED = 'approved';
     const STATUS_SUSPENDED = 'suspended';
@@ -29,6 +38,15 @@ class User extends Authenticatable
         self::STATUS_APPROVED => 'Aprovado',
         self::STATUS_SUSPENDED => 'Suspenso',
     ];
+
+    public static function translatedStatuses(): array
+    {
+        return [
+            self::STATUS_PENDING => __('messages.status_pending_label'),
+            self::STATUS_APPROVED => __('messages.status_approved'),
+            self::STATUS_SUSPENDED => __('messages.status_suspended'),
+        ];
+    }
 
     protected $fillable = [
         'name',
@@ -82,12 +100,12 @@ class User extends Authenticatable
 
     public function roleName(): string
     {
-        return self::ROLES[$this->role] ?? $this->role;
+        return self::translatedRoles()[$this->role] ?? $this->role;
     }
 
     public function statusName(): string
     {
-        return self::STATUSES[$this->status] ?? $this->status;
+        return self::translatedStatuses()[$this->status] ?? $this->status;
     }
 
     public function isApproved(): bool

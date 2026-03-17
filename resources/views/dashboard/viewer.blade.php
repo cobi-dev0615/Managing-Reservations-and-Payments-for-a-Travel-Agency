@@ -1,17 +1,17 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard')
-@section('page-title', 'Dashboard')
-@section('page-subtitle', 'Visao geral das reservas e tours')
+@section('title', __('messages.dashboard'))
+@section('page-title', __('messages.dashboard'))
+@section('page-subtitle', __('messages.dashboard_viewer_subtitle'))
 
 @section('content')
 {{-- Booking Stats --}}
-<div class="section-heading">Resumo de Reservas</div>
+<div class="section-heading">{{ __('messages.booking_summary') }}</div>
 <div class="row g-3 mb-4">
     <div class="col-md-3 col-6">
         <div class="card stat-card">
             <div class="card-body text-center py-3">
-                <div class="stat-card-label">Total Reservas</div>
+                <div class="stat-card-label">{{ __('messages.total_bookings') }}</div>
                 <div class="fs-4 fw-bold mt-1">{{ $bookingStats['total'] }}</div>
             </div>
         </div>
@@ -19,7 +19,7 @@
     <div class="col-md-3 col-6">
         <div class="card stat-card">
             <div class="card-body text-center py-3">
-                <div class="stat-card-label">Pendentes</div>
+                <div class="stat-card-label">{{ __('messages.pending') }}</div>
                 <div class="fs-4 fw-bold text-warning mt-1">{{ $bookingStats['pendente'] }}</div>
             </div>
         </div>
@@ -27,7 +27,7 @@
     <div class="col-md-3 col-6">
         <div class="card stat-card">
             <div class="card-body text-center py-3">
-                <div class="stat-card-label">Confirmadas</div>
+                <div class="stat-card-label">{{ __('messages.confirmed') }}</div>
                 <div class="fs-4 fw-bold text-success mt-1">{{ $bookingStats['confirmado'] }}</div>
             </div>
         </div>
@@ -35,7 +35,7 @@
     <div class="col-md-3 col-6">
         <div class="card stat-card">
             <div class="card-body text-center py-3">
-                <div class="stat-card-label">Concluidas</div>
+                <div class="stat-card-label">{{ __('messages.completed') }}</div>
                 <div class="fs-4 fw-bold text-primary mt-1">{{ $bookingStats['concluido'] }}</div>
             </div>
         </div>
@@ -48,7 +48,7 @@
     <div class="col-lg-6">
         <div class="card h-100">
             <div class="card-header d-flex align-items-center gap-2">
-                <i class="bi bi-pie-chart-fill text-primary me-1"></i> Status dos Pagamentos
+                <i class="bi bi-pie-chart-fill text-primary me-1"></i> {{ __('messages.payment_status') }}
             </div>
             <div class="card-body d-flex align-items-center justify-content-center">
                 <canvas id="paymentStatusChart" height="260"></canvas>
@@ -59,7 +59,7 @@
     <div class="col-lg-6">
         <div class="card h-100">
             <div class="card-header d-flex align-items-center gap-2">
-                <i class="bi bi-compass-fill text-warning me-1"></i> Tours por Tipo
+                <i class="bi bi-compass-fill text-warning me-1"></i> {{ __('messages.tours_by_type') }}
             </div>
             <div class="card-body d-flex align-items-center justify-content-center">
                 <canvas id="tourTypeChart" height="260"></canvas>
@@ -73,7 +73,7 @@
     <div class="col-12">
         <div class="card h-100">
             <div class="card-header d-flex align-items-center gap-2">
-                <i class="bi bi-graph-up text-info me-1"></i> Reservas por Mes (Ultimos 6 Meses)
+                <i class="bi bi-graph-up text-info me-1"></i> {{ __('messages.bookings_per_month') }}
             </div>
             <div class="card-body">
                 <canvas id="bookingsChart" height="260"></canvas>
@@ -182,7 +182,7 @@ document.addEventListener('DOMContentLoaded', function() {
         data: {
             labels: bookingsLabels,
             datasets: [{
-                label: 'Reservas',
+                label: '{{ __('messages.chart_bookings') }}',
                 data: bookingsData,
                 borderColor: '#3b82f6',
                 backgroundColor: isDark ? 'rgba(59,130,246,0.1)' : 'rgba(59,130,246,0.08)',

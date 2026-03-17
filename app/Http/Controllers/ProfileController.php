@@ -24,7 +24,7 @@ class ProfileController extends Controller
 
         $user->update($validated);
 
-        return back()->with('success', 'Perfil atualizado com sucesso.');
+        return back()->with('success', __('messages.profile_updated'));
     }
 
     public function updatePassword(Request $request)
@@ -37,6 +37,6 @@ class ProfileController extends Controller
         $user = \App\Models\User::find(auth()->id());
         $user->update(['password' => $request->password]);
 
-        return back()->with('success', 'Senha alterada com sucesso.');
+        return back()->with('success', __('messages.password_changed'));
     }
 }

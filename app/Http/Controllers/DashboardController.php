@@ -55,10 +55,10 @@ class DashboardController extends Controller
 
             // Payment status (viewer's own installments)
             $paymentStatusChart = [
-                'Pendente' => $scopeInstallment(Installment::where('status', 'pendente'))->count(),
-                'Pago' => $scopeInstallment(Installment::where('status', 'pago'))->count(),
-                'Atrasado' => $scopeInstallment(Installment::where('status', 'atrasado'))->count(),
-                'Falta Link' => $scopeInstallment(Installment::where('status', 'falta_link'))->count(),
+                __('messages.chart_pending') => $scopeInstallment(Installment::where('status', 'pendente'))->count(),
+                __('messages.chart_paid') => $scopeInstallment(Installment::where('status', 'pago'))->count(),
+                __('messages.chart_overdue') => $scopeInstallment(Installment::where('status', 'atrasado'))->count(),
+                __('messages.chart_missing_link') => $scopeInstallment(Installment::where('status', 'falta_link'))->count(),
             ];
 
             // Bookings per month (viewer's own)
@@ -87,10 +87,10 @@ class DashboardController extends Controller
                 ->toArray();
 
             $typeLabels = [
-                'grupo' => 'Grupo',
-                'privado' => 'Privado',
-                'agencia' => 'Agencia',
-                'influencer' => 'Influencer',
+                'grupo' => __('messages.chart_group'),
+                'privado' => __('messages.chart_private'),
+                'agencia' => __('messages.chart_agency'),
+                'influencer' => __('messages.chart_influencer'),
             ];
             $tourTypeChart = [];
             foreach ($toursByType as $type => $count) {
@@ -184,10 +184,10 @@ class DashboardController extends Controller
 
         // 2) Payment Status Distribution — all installments
         $paymentStatusChart = [
-            'Pendente' => Installment::where('status', 'pendente')->count(),
-            'Pago' => Installment::where('status', 'pago')->count(),
-            'Atrasado' => Installment::where('status', 'atrasado')->count(),
-            'Falta Link' => Installment::where('status', 'falta_link')->count(),
+            __('messages.chart_pending') => Installment::where('status', 'pendente')->count(),
+            __('messages.chart_paid') => Installment::where('status', 'pago')->count(),
+            __('messages.chart_overdue') => Installment::where('status', 'atrasado')->count(),
+            __('messages.chart_missing_link') => Installment::where('status', 'falta_link')->count(),
         ];
 
         // 3) Bookings per Month — last 6 months
@@ -214,10 +214,10 @@ class DashboardController extends Controller
             ->toArray();
 
         $typeLabels = [
-            'grupo' => 'Grupo',
-            'privado' => 'Privado',
-            'agencia' => 'Agencia',
-            'influencer' => 'Influencer',
+            'grupo' => __('messages.chart_group'),
+            'privado' => __('messages.chart_private'),
+            'agencia' => __('messages.chart_agency'),
+            'influencer' => __('messages.chart_influencer'),
         ];
         $tourTypeChart = [];
         foreach ($toursByType as $type => $count) {

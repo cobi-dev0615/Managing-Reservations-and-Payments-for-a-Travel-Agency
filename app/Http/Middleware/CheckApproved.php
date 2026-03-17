@@ -15,9 +15,9 @@ class CheckApproved
             $request->session()->invalidate();
             $request->session()->regenerateToken();
 
-            $message = 'Sua conta esta aguardando aprovacao do administrador.';
+            $message = __('messages.pending_approval_msg');
             if ($request->user() && $request->user()->isSuspended()) {
-                $message = 'Sua conta foi suspensa. Entre em contato com o administrador.';
+                $message = __('messages.account_suspended_msg');
             }
 
             return redirect()->route('login')->withErrors(['status' => $message]);

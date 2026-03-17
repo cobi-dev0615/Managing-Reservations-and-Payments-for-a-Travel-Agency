@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -215,33 +215,33 @@
                 @csrf
 
                 <div class="mb-3">
-                    <label for="email" class="form-label">E-mail</label>
+                    <label for="email" class="form-label">Email</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                        <input type="email" name="email" id="email" class="form-control" value="{{ old('email') }}" placeholder="seu@email.com" required autofocus>
+                        <input type="email" name="email" id="email" class="form-control" value="{{ old('email') }}" placeholder="your@email.com" required autofocus>
                     </div>
                 </div>
 
                 <div class="mb-3">
-                    <label for="password" class="form-label">Senha</label>
+                    <label for="password" class="form-label">Password</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                        <input type="password" name="password" id="password" class="form-control" placeholder="Sua senha" required>
+                        <input type="password" name="password" id="password" class="form-control" placeholder="Your password" required>
                     </div>
                 </div>
 
                 <div class="mb-3 form-check">
                     <input type="checkbox" class="form-check-input" name="remember" id="remember">
-                    <label class="form-check-label" for="remember">Lembrar de mim</label>
+                    <label class="form-check-label" for="remember">Remember me</label>
                 </div>
 
                 <button type="submit" class="btn btn-primary w-100">
-                    <i class="bi bi-box-arrow-in-right me-1"></i> Entrar
+                    <i class="bi bi-box-arrow-in-right me-1"></i> Login
                 </button>
             </form>
 
             <div class="auth-footer">
-                Nao tem conta? <a href="{{ route('register') }}">Criar conta</a>
+                Don't have an account? <a href="{{ route('register') }}">Create account</a>
             </div>
         </div>
     </div>
@@ -279,18 +279,18 @@
         document.addEventListener('DOMContentLoaded', function() {
             @if($errors->has('status'))
                 showLoginToast(
-                    '{{ $errors->first("status") === "Sua conta esta aguardando aprovacao do administrador." ? "warning" : "error" }}',
-                    '{{ $errors->first("status") === "Sua conta esta aguardando aprovacao do administrador." ? "Conta Pendente" : "Conta Suspensa" }}',
+                    '{{ $errors->first("status") === __("messages.pending_approval_msg") ? "warning" : "error" }}',
+                    '{{ $errors->first("status") === __("messages.pending_approval_msg") ? "Account Pending" : "Account Suspended" }}',
                     '{{ $errors->first("status") }}'
                 );
             @endif
 
             @if(session('info'))
-                showLoginToast('info', 'Conta Registrada', '{{ session("info") }}');
+                showLoginToast('info', 'Account Registered', '{{ session("info") }}');
             @endif
 
             @if(session('success'))
-                showLoginToast('success', 'Sucesso', '{{ session("success") }}');
+                showLoginToast('success', 'Success', '{{ session("success") }}');
             @endif
         });
     </script>

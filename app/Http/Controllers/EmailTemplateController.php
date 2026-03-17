@@ -36,12 +36,12 @@ class EmailTemplateController extends Controller
 
         $template = EmailTemplate::create($validated);
 
-        ActivityLog::log('criou template', 'EmailTemplate', $template->id, [
+        ActivityLog::log(__('messages.log_created_template'), 'EmailTemplate', $template->id, [
             'name' => $template->name,
             'type' => $template->type,
         ]);
 
-        return redirect()->route('email-templates.index')->with('success', 'Template criado com sucesso.');
+        return redirect()->route('email-templates.index')->with('success', __('messages.template_created'));
     }
 
     public function edit(EmailTemplate $emailTemplate)
@@ -63,12 +63,12 @@ class EmailTemplateController extends Controller
 
         $emailTemplate->update($validated);
 
-        ActivityLog::log('atualizou template', 'EmailTemplate', $emailTemplate->id, [
+        ActivityLog::log(__('messages.log_updated_template'), 'EmailTemplate', $emailTemplate->id, [
             'name' => $emailTemplate->name,
             'type' => $emailTemplate->type,
         ]);
 
-        return redirect()->route('email-templates.index')->with('success', 'Template atualizado com sucesso.');
+        return redirect()->route('email-templates.index')->with('success', __('messages.template_updated'));
     }
 
     public function destroy(EmailTemplate $emailTemplate)
@@ -80,9 +80,9 @@ class EmailTemplateController extends Controller
 
         $emailTemplate->delete();
 
-        ActivityLog::log('excluiu template', 'EmailTemplate', null, $details);
+        ActivityLog::log(__('messages.log_deleted_template'), 'EmailTemplate', null, $details);
 
-        return redirect()->route('email-templates.index')->with('success', 'Template excluído com sucesso.');
+        return redirect()->route('email-templates.index')->with('success', __('messages.template_deleted'));
     }
 
     public function preview(EmailTemplate $emailTemplate)

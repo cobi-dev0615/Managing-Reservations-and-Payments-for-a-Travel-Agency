@@ -36,7 +36,7 @@ class UserController extends Controller
 
         User::create($validated);
 
-        return redirect()->route('users.index')->with('success', 'Usuario criado com sucesso.');
+        return redirect()->route('users.index')->with('success', __('messages.user_created'));
     }
 
     public function edit(User $user)
@@ -66,47 +66,47 @@ class UserController extends Controller
 
         $user->save();
 
-        return redirect()->route('users.index')->with('success', 'Usuario atualizado com sucesso.');
+        return redirect()->route('users.index')->with('success', __('messages.user_updated'));
     }
 
     public function destroy(User $user)
     {
         if ($user->id === auth()->id()) {
-            return back()->with('error', 'Voce nao pode excluir sua propria conta.');
+            return back()->with('error', __('messages.cannot_delete_self'));
         }
 
         if ($user->isAdmin() && User::where('role', 'admin')->count() <= 1) {
-            return back()->with('error', 'Nao e possivel excluir o unico administrador.');
+            return back()->with('error', __('messages.cannot_delete_only_admin'));
         }
 
         $user->delete();
 
-        return redirect()->route('users.index')->with('success', 'Usuario excluido com sucesso.');
+        return redirect()->route('users.index')->with('success', __('messages.user_deleted'));
     }
 
     public function approve(User $user)
     {
         $user->update(['status' => User::STATUS_APPROVED]);
 
-        ActivityLog::log('aprovou', 'User', $user->id, ['name' => $user->name]);
+        ActivityLog::log(__('messages.log_approved'), 'User', $user->id, ['name' => $user->name]);
 
-        return back()->with('success', "Usuario {$user->name} aprovado com sucesso.");
+        return back()->with('success', __('messages.user_approved', ['name' => $user->name]));
     }
 
     public function suspend(User $user)
     {
         if ($user->id === auth()->id()) {
-            return back()->with('error', 'Voce nao pode suspender sua propria conta.');
+            return back()->with('error', __('messages.cannot_suspend_self'));
         }
 
         if ($user->isAdmin()) {
-            return back()->with('error', 'Nao e possivel suspender um administrador.');
+            return back()->with('error', __('messages.cannot_suspend_admin'));
         }
 
         $user->update(['status' => User::STATUS_SUSPENDED]);
 
-        ActivityLog::log('suspendeu', 'User', $user->id, ['name' => $user->name]);
+        ActivityLog::log(__('messages.log_suspended'), 'User', $user->id, ['name' => $user->name]);
 
-        return back()->with('success', "Usuario {$user->name} suspenso com sucesso.");
+        return back()->with('success', __('messages.user_suspended', ['name' => $user->name]));
     }
 }

@@ -11,7 +11,7 @@ class CheckRole
     public function handle(Request $request, Closure $next, string ...$roles): Response
     {
         if (!$request->user() || !$request->user()->hasRole($roles)) {
-            abort(403, 'Acesso nao autorizado.');
+            abort(403, __('messages.unauthorized'));
         }
 
         return $next($request);

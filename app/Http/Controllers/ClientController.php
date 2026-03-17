@@ -48,9 +48,9 @@ class ClientController extends Controller
 
         $client = Client::create($validated);
 
-        ActivityLog::log('criou', 'Client', $client->id, ['name' => $client->name]);
+        ActivityLog::log(__('messages.log_created'), 'Client', $client->id, ['name' => $client->name]);
 
-        return redirect()->route('clients.show', $client)->with('success', 'Cliente criado com sucesso.');
+        return redirect()->route('clients.show', $client)->with('success', __('messages.client_created'));
     }
 
     public function show(Client $client)
@@ -58,7 +58,7 @@ class ClientController extends Controller
         if (auth()->user()->isViewer()) {
             $hasAccess = Booking::where('created_by', auth()->id())->where('client_id', $client->id)->exists();
             if (!$hasAccess) {
-                abort(403, 'Acesso nao autorizado.');
+                abort(403, __('messages.unauthorized'));
             }
         }
 
@@ -82,9 +82,9 @@ class ClientController extends Controller
 
         $client->update($validated);
 
-        ActivityLog::log('atualizou', 'Client', $client->id, ['name' => $client->name]);
+        ActivityLog::log(__('messages.log_updated'), 'Client', $client->id, ['name' => $client->name]);
 
-        return redirect()->route('clients.show', $client)->with('success', 'Cliente atualizado com sucesso.');
+        return redirect()->route('clients.show', $client)->with('success', __('messages.client_updated'));
     }
 
     public function destroy(Client $client)
@@ -93,8 +93,8 @@ class ClientController extends Controller
 
         $client->delete();
 
-        ActivityLog::log('excluiu', 'Client', null, ['name' => $name]);
+        ActivityLog::log(__('messages.log_deleted'), 'Client', null, ['name' => $name]);
 
-        return redirect()->route('clients.index')->with('success', 'Cliente excluído com sucesso.');
+        return redirect()->route('clients.index')->with('success', __('messages.client_deleted'));
     }
 }

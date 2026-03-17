@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acesso Negado - MOJO Safaris & Tours</title>
+    <title>{{ __('messages.access_denied_title') }}</title>
     <link rel="icon" href="{{ asset('images/mojo.png') }}" type="image/png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <style>
@@ -83,12 +83,12 @@
             <i class="bi bi-shield-lock-fill"></i>
         </div>
         <div class="error-code">403</div>
-        <div class="error-title">Acesso Negado</div>
+        <div class="error-title">{{ __('messages.access_denied') }}</div>
         <p class="error-message">
-            {{ $exception->getMessage() ?: 'Voce nao tem permissao para acessar esta pagina. Entre em contato com o administrador se acredita que isso e um erro.' }}
+            {{ $exception->getMessage() ?: __('messages.access_denied_msg') }}
         </p>
         <a href="{{ route('dashboard') }}" class="error-btn">
-            <i class="bi bi-arrow-left"></i> Voltar ao Dashboard
+            <i class="bi bi-arrow-left"></i> {{ __('messages.back_to_dashboard') }}
         </a>
     </div>
 </body>
