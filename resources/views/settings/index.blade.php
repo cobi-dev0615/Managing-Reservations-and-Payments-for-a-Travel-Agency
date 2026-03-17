@@ -146,6 +146,10 @@
                             <input type="email" name="smtp_from_email" id="smtp_from_email" class="form-control" value="{{ old('smtp_from_email', $allSettings['smtp_from_email'] ?? '') }}">
                         </div>
                     </div>
+
+                    <hr class="my-4">
+                    <h6 class="mb-3"><i class="bi bi-send-check me-1"></i> Testar Configuracao SMTP</h6>
+                    <p class="text-muted small mb-3">Salve as configuracoes SMTP acima antes de enviar o e-mail de teste.</p>
                 </div>
             </div>
         </div>
@@ -182,4 +186,26 @@
         </button>
     </div>
 </form>
+
+{{-- Test Email Form (separate form) --}}
+<div class="card mt-4" style="border: 1px dashed var(--border-color, #dee2e6); border-radius: 12px;">
+    <div class="card-body">
+        <h6 class="mb-3"><i class="bi bi-send-check me-2 text-info"></i> Enviar E-mail de Teste</h6>
+        <form method="POST" action="{{ route('settings.test-email') }}">
+            @csrf
+            <div class="row align-items-end g-3">
+                <div class="col-md-6">
+                    <label for="test_email" class="form-label">Endereco de E-mail</label>
+                    <input type="email" name="test_email" id="test_email" class="form-control" placeholder="seu@email.com" required value="{{ auth()->user()->email }}">
+                </div>
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-outline-info">
+                        <i class="bi bi-envelope-arrow-up me-1"></i> Enviar Teste
+                    </button>
+                </div>
+            </div>
+            <p class="text-muted small mt-2 mb-0">Um e-mail de teste sera enviado usando as configuracoes SMTP salvas.</p>
+        </form>
+    </div>
+</div>
 @endsection

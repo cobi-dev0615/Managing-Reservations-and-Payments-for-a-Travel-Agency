@@ -10,6 +10,7 @@ use App\Models\Installment;
 use App\Models\Setting;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Mail;
 
 class SendPaymentReminders extends Command
@@ -33,6 +34,23 @@ class SendPaymentReminders extends Command
         $skipped = 0;
 
         $this->info("Executando verificação de e-mails automáticos - {$today->format('d/m/Y')}");
+
+        // Ensure SMTP config from database is applied
+        $smtpHost = Setting::get('smtp_host');
+        if (!$smtpHost) {
+            $this->error('Configuração SMTP não encontrada. Configure em Configurações > SMTP.');
+            return Command::FAILURE;
+        }
+
+        Config::set('mail.default', 'smtp');
+        Config::set('mail.mailers.smtp.host', $smtpHost);
+        Config::set('mail.mailers.smtp.port', (int) Setting::get('smtp_port', '587'));
+        Config::set('mail.mailers.smtp.username', Setting::get('smtp_username'));
+        Config::set('mail.mailers.smtp.password', Setting::get('smtp_password'));
+        Config::set('mail.mailers.smtp.encryption', Setting::get('smtp_encryption', 'tls'));
+        Config::set('mail.from.name', Setting::get('smtp_from_name', 'MOJO Safaris & Tours'));
+        Config::set('mail.from.address', Setting::get('smtp_from_email', 'noreply@mojosafaris.com'));
+        Mail::purge('smtp');
 
         foreach ($this->triggers as $daysOffset => $config) {
             // Check if this trigger is enabled in settings

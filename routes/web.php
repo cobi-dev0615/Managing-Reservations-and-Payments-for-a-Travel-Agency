@@ -91,6 +91,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware('can.manage')->group(function () {
         Route::get('configuracoes', [SettingController::class, 'index'])->name('settings.index');
         Route::put('configuracoes', [SettingController::class, 'update'])->name('settings.update');
+        Route::post('configuracoes/test-email', [SettingController::class, 'testEmail'])->name('settings.test-email');
     });
 
     // Logs — admin & manager only

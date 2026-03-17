@@ -1165,6 +1165,20 @@
             background: rgba(59, 130, 246, 0.08);
             color: #60a5fa;
         }
+        [data-theme="dark"] .accordion-button::after {
+            filter: invert(1) brightness(2);
+        }
+        [data-theme="dark"] .accordion-body {
+            color: #e2e8f0;
+        }
+        [data-theme="dark"] .accordion-body .form-label,
+        [data-theme="dark"] .accordion-body .form-check-label {
+            color: #e2e8f0;
+        }
+        [data-theme="dark"] .accordion-body .form-text,
+        [data-theme="dark"] .accordion-body .text-muted {
+            color: #94a3b8 !important;
+        }
 
         [data-theme="dark"] .nav-tabs {
             border-bottom-color: rgba(59, 130, 246, 0.1);
