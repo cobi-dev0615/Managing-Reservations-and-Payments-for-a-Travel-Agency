@@ -397,6 +397,7 @@ document.addEventListener('DOMContentLoaded', function() {
         BRL: { bg: 'rgba(34,197,94,0.7)', border: '#22c55e', hoverBg: 'rgba(34,197,94,0.9)' },
         USD: { bg: 'rgba(59,130,246,0.7)', border: '#3b82f6', hoverBg: 'rgba(59,130,246,0.9)' },
         EUR: { bg: 'rgba(245,158,11,0.7)', border: '#f59e0b', hoverBg: 'rgba(245,158,11,0.9)' },
+        ZAR: { bg: 'rgba(147,51,234,0.7)', border: '#9333ea', hoverBg: 'rgba(147,51,234,0.9)' },
     };
     @foreach($revenueData as $currency => $values)
         revenueDatasets.push({

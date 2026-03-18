@@ -168,6 +168,7 @@ return [
     'brl_real' => 'BRL - Real',
     'usd_dollar' => 'USD - Dolar',
     'eur_euro' => 'EUR - Euro',
+    'zar_rand' => 'ZAR - Rand',
     'max_travelers' => 'Max. Viajantes',
     'max_travelers_placeholder' => 'Ex: 30',
     'notes_placeholder' => 'Notas internas sobre o tour...',

@@ -57,6 +57,7 @@
                                 <option value="BRL" {{ old('default_currency') == 'BRL' ? 'selected' : '' }}>{{ __('messages.brl_real') }}</option>
                                 <option value="USD" {{ old('default_currency') == 'USD' ? 'selected' : '' }}>{{ __('messages.usd_dollar') }}</option>
                                 <option value="EUR" {{ old('default_currency') == 'EUR' ? 'selected' : '' }}>{{ __('messages.eur_euro') }}</option>
+                                <option value="ZAR" {{ old('default_currency') == 'ZAR' ? 'selected' : '' }}>{{ __('messages.zar_rand') }}</option>
                             </select>
                             @error('default_currency')
                                 <div class="invalid-feedback">{{ $message }}</div>

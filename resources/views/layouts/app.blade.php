@@ -363,6 +363,7 @@
         .currency-BRL { background: #dcfce7; color: #166534; }
         .currency-USD { background: #dbeafe; color: #1e40af; }
         .currency-EUR { background: #fef3c7; color: #92400e; }
+        .currency-ZAR { background: #f3e8ff; color: #6b21a8; }
 
         /* ===== TABLES ===== */
         .table {
@@ -1245,6 +1246,7 @@
         [data-theme="dark"] .currency-BRL { background: rgba(22, 163, 74, 0.12); color: #4ade80; }
         [data-theme="dark"] .currency-USD { background: rgba(59, 130, 246, 0.12); color: #60a5fa; }
         [data-theme="dark"] .currency-EUR { background: rgba(245, 158, 11, 0.12); color: #fbbf24; }
+        [data-theme="dark"] .currency-ZAR { background: rgba(147, 51, 234, 0.12); color: #c084fc; }
         [data-theme="dark"] .status-pendente { background: rgba(245, 158, 11, 0.1); color: #fbbf24; }
         [data-theme="dark"] .status-pago { background: rgba(16, 185, 129, 0.1); color: #34d399; }
         [data-theme="dark"] .status-atrasado { background: rgba(239, 68, 68, 0.1); color: #fca5a5; }

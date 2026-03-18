@@ -85,6 +85,7 @@
                                 <option value="BRL" {{ old('currency', $booking->currency) == 'BRL' ? 'selected' : '' }}>{{ __('messages.brl_real') }}</option>
                                 <option value="USD" {{ old('currency', $booking->currency) == 'USD' ? 'selected' : '' }}>{{ __('messages.usd_dollar') }}</option>
                                 <option value="EUR" {{ old('currency', $booking->currency) == 'EUR' ? 'selected' : '' }}>{{ __('messages.eur_euro') }}</option>
+                                <option value="ZAR" {{ old('currency', $booking->currency) == 'ZAR' ? 'selected' : '' }}>{{ __('messages.zar_rand') }}</option>
                             </select>
                             @error('currency')
                                 <div class="invalid-feedback">{{ $message }}</div>
