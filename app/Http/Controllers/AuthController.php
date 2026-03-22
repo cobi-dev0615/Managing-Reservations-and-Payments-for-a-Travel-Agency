@@ -26,23 +26,25 @@ class AuthController extends Controller
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $user = Auth::user();
 
-            // Check if user account is approved
-            if ($user->isPending()) {
-                Auth::logout();
-                $request->session()->invalidate();
-                $request->session()->regenerateToken();
-                return back()->withErrors([
-                    'status' => __('messages.pending_approval_msg'),
-                ])->onlyInput('email');
-            }
+            // Admins can always login without approval check
+            if (!$user->isAdmin()) {
+                if ($user->isPending()) {
+                    Auth::logout();
+                    $request->session()->invalidate();
+                    $request->session()->regenerateToken();
+                    return back()->withErrors([
+                        'status' => __('messages.pending_approval_msg'),
+                    ])->onlyInput('email');
+                }
 
-            if ($user->isSuspended()) {
-                Auth::logout();
-                $request->session()->invalidate();
-                $request->session()->regenerateToken();
-                return back()->withErrors([
-                    'status' => __('messages.account_suspended_msg'),
-                ])->onlyInput('email');
+                if ($user->isSuspended()) {
+                    Auth::logout();
+                    $request->session()->invalidate();
+                    $request->session()->regenerateToken();
+                    return back()->withErrors([
+                        'status' => __('messages.account_suspended_msg'),
+                    ])->onlyInput('email');
+                }
             }
 
             $request->session()->regenerate();

@@ -69,6 +69,16 @@ class User extends Authenticatable
         ];
     }
 
+    protected static function booted(): void
+    {
+        // Admin accounts are always approved
+        static::saving(function (User $user) {
+            if ($user->role === self::ROLE_ADMIN) {
+                $user->status = self::STATUS_APPROVED;
+            }
+        });
+    }
+
     public function isAdmin(): bool
     {
         return $this->role === self::ROLE_ADMIN;
