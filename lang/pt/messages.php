@@ -466,6 +466,12 @@ return [
     'chart_influencer' => 'Influencer',
     'chart_bookings' => 'Reservas',
 
+    // ===== ERROR PAGES =====
+    'server_error' => 'Erro no Servidor',
+    'server_error_msg' => 'Algo deu errado no servidor. Tente novamente mais tarde ou entre em contato com o administrador se o problema persistir.',
+    'page_not_found' => 'Pagina Nao Encontrada',
+    'page_not_found_msg' => 'A pagina que voce esta procurando nao existe ou foi movida.',
+
     // ===== SESSION =====
     'session_expired' => 'Sua sessao expirou. Por favor, faca login novamente.',
 

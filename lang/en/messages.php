@@ -466,6 +466,12 @@ return [
     'chart_influencer' => 'Influencer',
     'chart_bookings' => 'Bookings',
 
+    // ===== ERROR PAGES =====
+    'server_error' => 'Server Error',
+    'server_error_msg' => 'Something went wrong on our end. Please try again later or contact the administrator if the problem persists.',
+    'page_not_found' => 'Page Not Found',
+    'page_not_found_msg' => 'The page you are looking for does not exist or has been moved.',
+
     // ===== SESSION =====
     'session_expired' => 'Your session has expired. Please log in again.',
 
