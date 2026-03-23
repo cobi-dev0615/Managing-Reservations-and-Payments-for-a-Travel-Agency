@@ -22,6 +22,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
+        // 419 - CSRF token expired: redirect to login
         $exceptions->renderable(function (HttpException $e, $request) {
             if ($e->getStatusCode() !== 419) {
                 return null;
@@ -33,5 +34,21 @@ return Application::configure(basePath: dirname(__DIR__))
 
             return redirect()->route('login')
                 ->with('warning', __('messages.session_expired'));
+        });
+
+        // 500 - Server error: redirect back with toast notification
+        $exceptions->renderable(function (\Throwable $e, $request) {
+            if ($e instanceof HttpException) {
+                return null;
+            }
+
+            if ($request->expectsJson()) {
+                return response()->json(['message' => __('messages.server_error_msg')], 500);
+            }
+
+            $fallback = auth()->check() ? route('dashboard') : route('login');
+
+            return redirect()->to(url()->previous($fallback))
+                ->with('error', __('messages.server_error_msg'));
         });
     })->create();
