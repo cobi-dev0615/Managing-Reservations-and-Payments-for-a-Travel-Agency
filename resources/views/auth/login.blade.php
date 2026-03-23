@@ -292,6 +292,10 @@
             @if(session('success'))
                 showLoginToast('success', 'Success', '{{ session("success") }}');
             @endif
+
+            @if(session('warning'))
+                showLoginToast('warning', 'Session Expired', '{{ session("warning") }}');
+            @endif
         });
     </script>
 </body>

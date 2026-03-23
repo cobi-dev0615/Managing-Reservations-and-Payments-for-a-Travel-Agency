@@ -466,4 +466,7 @@ return [
     'chart_influencer' => 'Influencer',
     'chart_bookings' => 'Reservas',
 
+    // ===== SESSION =====
+    'session_expired' => 'Sua sessao expirou. Por favor, faca login novamente.',
+
 ];
