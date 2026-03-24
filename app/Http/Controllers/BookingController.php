@@ -85,15 +85,17 @@ class BookingController extends Controller
         $numInstallments = (int) $request->input('num_installments', 0);
         if ($numInstallments > 0) {
             $installmentAmount = round($booking->total_value / $numInstallments, 2);
+            $lastInstallmentAmount = $booking->total_value - ($installmentAmount * ($numInstallments - 1));
             $paymentMethod = $request->input('installment_payment_method', 'pix');
-            $startDate = Carbon::parse($booking->start_date);
+            $startDate = Carbon::today();
 
             for ($i = 1; $i <= $numInstallments; $i++) {
                 $dueDate = $startDate->copy()->addMonths($i - 1);
+                $amount = ($i === $numInstallments) ? $lastInstallmentAmount : $installmentAmount;
 
                 $installment = $booking->installments()->create([
                     'installment_number' => $i,
-                    'amount'             => $installmentAmount,
+                    'amount'             => $amount,
                     'due_date'           => $dueDate,
                     'payment_method'     => $paymentMethod,
                     'status'             => 'pendente',
