@@ -93,6 +93,13 @@ class SendPaymentReminders extends Command
                     continue;
                 }
 
+                // Skip if payment method is "link" but no link is set
+                if ($installment->payment_method === 'link' && empty($installment->payment_link)) {
+                    $this->line("    Parcela #{$installment->id} - método link sem link cadastrado, pulando");
+                    $skipped++;
+                    continue;
+                }
+
                 // Skip if no client email
                 $client = $installment->booking->client;
                 if (!$client || !$client->email) {

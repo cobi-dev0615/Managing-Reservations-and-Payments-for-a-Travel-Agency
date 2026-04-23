@@ -412,6 +412,7 @@ return [
     'emails_paused' => 'Emails paused for this installment.',
     'emails_reactivated' => 'Emails reactivated for this installment.',
     'template_not_found' => 'Email template not found for type: :type',
+    'missing_payment_link' => 'Cannot send email: this installment uses the "Link" payment method but no payment link has been set. Please edit the installment and add a payment link first.',
     'client_no_email' => 'Client has no registered email.',
     'email_send_failed' => 'Failed to send email: :error',
     'email_resent' => 'Email resent successfully.',

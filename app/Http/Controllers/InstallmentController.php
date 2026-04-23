@@ -122,6 +122,11 @@ class InstallmentController extends Controller
     {
         $installment->load(['booking.client', 'booking.tour']);
 
+        // Warn if payment method is "link" but no link is set
+        if ($installment->payment_method === 'link' && empty($installment->payment_link)) {
+            return redirect()->back()->with('error', __('messages.missing_payment_link'));
+        }
+
         $resolvedStatus = $installment->resolveStatus();
 
         // Choose template based on status

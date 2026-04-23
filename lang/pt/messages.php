@@ -412,6 +412,7 @@ return [
     'emails_paused' => 'E-mails pausados para esta parcela.',
     'emails_reactivated' => 'E-mails reativados para esta parcela.',
     'template_not_found' => 'Template de e-mail nao encontrado para o tipo: :type',
+    'missing_payment_link' => 'Nao e possivel enviar e-mail: esta parcela usa o metodo de pagamento "Link", mas nenhum link foi cadastrado. Edite a parcela e adicione um link de pagamento primeiro.',
     'client_no_email' => 'Cliente sem e-mail cadastrado.',
     'email_send_failed' => 'Falha ao enviar e-mail: :error',
     'email_resent' => 'E-mail reenviado com sucesso.',
